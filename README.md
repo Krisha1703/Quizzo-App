@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎯 Quizzo - Interactive Quiz App
 
-## Getting Started
+## 📋 Overview
+**Quizzo** is an interactive quiz web application built with **Next.js** (App Router) and **Tailwind CSS**. It allows users to answer multiple-choice questions, track their progress with visual indicators, and view a detailed result summary at the end.
 
-First, run the development server:
+![quiz-1.png](/public/Screenshots/home.png)
+*Home page.*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🖥️ Tech Stack
+- **Frontend:** Next.js ⚡, Tailwind CSS 🎨, Framer Motion 🖼️
+- **API Integration:** Fetching quiz data from REST APIs 🌐
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![quiz-2.png](/public/Screenshots/instruction.png)
+*Instruction page.*
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🚀 Features
+- **✅ Quiz Data:** – Stored the quiz data as json, and fetched using REST API.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![quiz-3.png](/public/Screenshots/current-question.png)
+*Current question.*
 
-## Learn More
+- **✅ Multiple Choice Questions:** – Users can select an answer and receive immediate feedback.
 
-To learn more about Next.js, take a look at the following resources:
+![quiz-4.png](/public/Screenshots/correct.png)
+*Correct answer.*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **✅ Progress Indicator:** – Users can select an answer and receive immediate feedback.
+    - Gray: Unanswered
+    - Yellow: Current question
+    - Green: Correct answer
+    - Red: Incorrect or unanswered due to timeout
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+![quiz-5.png](/public/Screenshots/submit.png)
+*Submit quiz.*
 
-## Deploy on Vercel
+- **✅ Timer Support:** – Users must answer within a time limit.
+- **✅ Attempts Tracking** – The attempt count only increases when the user clicks "Retry" or refreshes the page.
+- **✅ Summary Modal** – Displays total score, correct/incorrect answers, and unanswered questions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![quiz-6.png](/public/Screenshots/result.png)
+*Result summary modal.*
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ✅ **Interactive UI:** Smooth animations, consistent design, and an intuitive layout for an immersive experience.
+- ✅ **User-Friendly:** Simple navigation and easy-to-understand gameplay mechanics.
+
+## 🛠️ Installation
+1. Clone the repository:
+   ```bash
+   https://github.com/Krisha1703/Quizzo-App.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd Quizzo-App
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm start
+   ```
+## 📢 Future Enhancements
+- 🚀 Add categories & difficulty levels
+- 🚀 More quiz types (true/false, fill in the blanks, etc.)
+
+### 🖥️ Live Deployed Link
+https://quizzo-app-krisha.vercel.app/
+
+

@@ -16,7 +16,7 @@ const Instruction = () => {
       <li>For multiple-choice questions, select the one best answer (A, B, C, or D).</li>
         <li>For integer-type questions, write your numerical answer clearly.</li>
         <li>No calculators unless specified.</li>
-        <li>You have <strong>30 minutes</strong> to complete this quiz.</li>
+        <li>You have <strong>30 seconds</strong> per question.</li>
         <li>There is only <strong>one correct answer</strong> for each question.</li>
         <li>You <strong>cannot go back</strong> to previous questions once answered.</li>
         <li>Each correct answer awards <strong>+10 points</strong>.</li>
