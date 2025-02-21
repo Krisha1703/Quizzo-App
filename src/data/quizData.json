@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "question": "Which planet is closest to the Sun?",
+      "options": ["Venus", "Mercury", "Earth", "Mars"],
+      "correctAnswer": "Mercury",
+      "explanation": "Mercury is the closest planet to the Sun. It orbits the Sun in just 88 Earth days."
+    },
+    {
+      "id": 2,
+      "question": "Which data structure organizes items in a First-In, First-Out (FIFO) manner?",
+      "options": ["Stack", "Queue", "Tree", "Graph"],
+      "correctAnswer": "Queue",
+      "explanation": "A Queue is a linear data structure that follows the First-In, First-Out (FIFO) principle."
+    },
+    {
+      "id": 3,
+      "question": "Which of the following is primarily used for structuring web pages?",
+      "options": ["Python", "Java", "HTML", "C++"],
+      "correctAnswer": "HTML",
+      "explanation": "HTML (HyperText Markup Language) is used to create and structure content on the web."
+    },
+    {
+      "id": 4,
+      "question": "Which chemical symbol stands for Gold?",
+      "options": ["Au", "Gd", "Ag", "Pt"],
+      "correctAnswer": "Au",
+      "explanation": "The symbol 'Au' comes from the Latin word for gold, 'aurum'."
+    },
+    {
+      "id": 5,
+      "question": "Which of these processes is not typically involved in refining petroleum?",
+      "options": ["Fractional distillation", "Cracking", "Polymerization", "Filtration"],
+      "correctAnswer": "Filtration",
+      "explanation": "Filtration is not a standard process in petroleum refining, unlike distillation and cracking."
+    }
+  ]
+  

@@ -1,10 +1,17 @@
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 
 const Instruction = () => {
   return (
     <div className="md:w-2/3 w-5/6 mx-auto p-6 bg-white shadow-lg rounded-md">
-      <h2 className="md:text-xl text-md font-bold text-primary mb-4">Quiz Instructions</h2>
+        <div className="flex justify-between">
+            <h2 className="md:text-xl text-md font-bold text-primary mb-4">Quiz Instructions</h2>
+            <Link href={"/"}>
+                <Image src="/Assets/home.png" width={50} height={50} alt="home" className="cursor-pointer"/>
+            </Link>
+        </div>
       <ul className="list-disc md:text-lg text-sm list-inside text-gray-700 space-y-2">
       <li>For multiple-choice questions, select the one best answer (A, B, C, or D).</li>
         <li>For integer-type questions, write your numerical answer clearly.</li>
@@ -20,13 +27,15 @@ const Instruction = () => {
       </ul>
 
        {/* Start Quiz Button with Primary Background */}
-       <motion.button 
-            initial={{y: 0}}
-            whileHover={{y: -5}}
-            transition={{duration: 0.5}}
-            className=" cursor-pointer my-5 hover:bg-secondary bg-primary text-white font-bold py-2 px-6 rounded-md">
-          Start Quiz
-        </motion.button>
+       <Link href={"/quiz"}>
+        <motion.button 
+                initial={{y: 0}}
+                whileHover={{y: -5}}
+                transition={{duration: 0.5}}
+                className=" cursor-pointer my-5 hover:bg-secondary bg-primary text-white font-bold py-2 px-6 rounded-md">
+            Start Quiz
+            </motion.button>
+        </Link>
 
     </div>
   );
