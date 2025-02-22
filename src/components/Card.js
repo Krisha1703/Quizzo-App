@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const Card = ({ title, src, href }) => {
   return (
-    <div className="rounded-md overflow-hidden md:w-1/3 w-5/6 h-full shadow-lg my-10">
+    <div className="rounded-md overflow-hidden md:w-1/4 w-5/6 h-full shadow-lg md:my-10 my-5">
       {/* Title Section */}
       <div className="bg-primary text-white text-center py-2 text-lg font-semibold">
         {title}
@@ -15,7 +15,7 @@ const Card = ({ title, src, href }) => {
       <div className="relative">
         <Image
           src={src}
-          width={400} // Adjust size as needed
+          width={400}
           height={250}
           alt="card"
           className="w-full h-auto"
