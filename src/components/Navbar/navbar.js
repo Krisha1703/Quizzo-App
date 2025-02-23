@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import MenuItem from "./MenuItem";
-import SearchBar from "./SearchBar";
-import { Drawer, IconButton, Button } from "@mui/material";
+import MenuItem from "./menu-item";
+import SearchBar from "./search-bar";
+import { Drawer, IconButton } from "@mui/material";
+import Button from "./button";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 
 const Navbar = () => {
@@ -15,8 +16,8 @@ const Navbar = () => {
       {/* Logo */}
       <Image
         src="/Assets/hovered-logo.png"
-        width={100}
-        height={100}
+        width={120}
+        height={120}
         alt="logo"
         className="cursor-pointer"
       />
@@ -38,9 +39,9 @@ const Navbar = () => {
       <MenuItem title="+ Create" create />
 
       {/* Login Button */}
-      <Button className="bg-primary text-white text-center p-2 px-6 cursor-pointer font-semibold rounded-md hidden lg:block">
-        Log in
-      </Button>
+      <div className="hidden lg:block">
+        <Button text={"Log in"} />
+      </div>
 
       {/* Hamburger Icon for Mobile */}
       <div className="lg:hidden">
@@ -80,14 +81,7 @@ const Navbar = () => {
         <MenuItem title="Learn" />
         <MenuItem title="Contact" create />
         <MenuItem title="+ Create" create />
-        <Button
-          variant="contained"
-          color="primary"
-          className="w-full"
-          onClick={toggleMenu}
-        >
-          Log in
-        </Button>
+        <Button text={"Log in"} onClick={toggleMenu}/>
       </Drawer>
     </div>
   );

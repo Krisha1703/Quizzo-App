@@ -1,7 +1,7 @@
 //Instruction Page
 "use client";
 import React from 'react';
-import Instruction from '@/components/Instruction';
+import Instruction from '@/components/quiz/instruction';
 
 const InstructionPage = () => {
   return (

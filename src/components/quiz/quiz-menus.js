@@ -1,5 +1,5 @@
 import React from 'react';
-import formatTime from './Timer';
+import formatTime from './timer';
 
 const Menus = ({ timer, isFlickering, score, attempts }) => {
   return (

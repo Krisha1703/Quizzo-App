@@ -1,10 +1,10 @@
 //Quiz Page
 "use client";
 import React, { useState, useEffect } from "react";
-import Menus from "@/components/Menus";
-import Options from "@/components/Options";
-import Images from "@/components/Images";
-import Modal from "@/components/Modal";
+import Menus from "@/components/quiz/quiz-menus";
+import Options from "@/components/quiz/options";
+import Images from "@/components/homepage/bg-images";
+import Modal from "@/components/quiz/result-modal";
 
 const QuizPage = () => {
   const [timer, setTimer] = useState(30);
