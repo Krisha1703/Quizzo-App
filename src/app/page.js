@@ -2,6 +2,7 @@
 import React from "react";
 import CardSlider from "@/components/homepage/card-slider";
 import Navbar from "@/components/Navbar/navbar";
+import SignUp from "@/components/homepage/signup-section/signup";
 import Hero from "@/components/homepage/hero-section/hero";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
     <div className="w-full mx-auto my-5">
       <Navbar />
       <Hero />
+      <SignUp />
       <CardSlider cards={cards} />
     </div>
   );
