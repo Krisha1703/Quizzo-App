@@ -1,8 +1,9 @@
 import React from 'react'
 
-const GridLayout = () => {
+const GridLayout = ({setCursorImage}) => {
   return (
-     <div className="absolute inset-0 grid grid-cols-12 grid-rows-12">
+     <div className="absolute inset-0 grid grid-cols-12 grid-rows-12" onMouseEnter={() => setCursorImage("/Assets/quiz-cursor.png")}
+     onMouseLeave={() => setCursorImage(null)}>
      {[...Array(12)].map((_, rowIndex) => (
        <div
          key={rowIndex}
