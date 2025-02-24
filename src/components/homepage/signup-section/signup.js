@@ -8,7 +8,7 @@ import Subtext from './subtext';
 const Hero = () => {
 
   return (
-    <div className='flex md:flex-row flex-col-reverse justify-center items-center mx-5'>
+    <div className='flex md:flex-row flex-col-reverse justify-center items-center mx-10'>
         <div className='flex flex-col gap-4'>
             
             <TypeWritting />

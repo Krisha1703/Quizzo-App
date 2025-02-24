@@ -1,15 +1,23 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GridLayout from "./grid-layout";
 import MainText from "./main-text";
 import Tag from "./tag";
 import dynamic from "next/dynamic";
+
 const CustomCursor = dynamic(() => import("./custom-cursor"), {
   ssr: false,
 });
 
 const Hero = () => {
   const [cursorImage, setCursorImage] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setCursorImage(null);
+    }
+  }, []);
+  
 
   return (
     <div className="relative w-full cursor-none md:h-screen h-[60vh] flex items-center overflow-hidden bg-white">
