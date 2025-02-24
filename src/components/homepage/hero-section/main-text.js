@@ -9,8 +9,8 @@ const MainText = ({ setCursorImage }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1 }}
-      className="z-10 mx-10 flex flex-col "
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+      className="z-10 md:mx-10 mx-5 flex flex-col "
       onMouseEnter={() => {
         setCursorImage("/Assets/brain.png");
       }}
@@ -18,7 +18,7 @@ const MainText = ({ setCursorImage }) => {
         setCursorImage(null); 
       }}
     >
-      <h1 className="text-[7rem] font-bold text-primary">
+      <h1 className="lg:text-[7rem] md:text-[5rem] text-[4rem] font-bold text-primary tracking-[0.1rem]">
         {["Q", "U", "I", "Z", "Z", "O"].map((letter, index) => (
           <motion.span
             key={index}
@@ -33,8 +33,8 @@ const MainText = ({ setCursorImage }) => {
             {hoveredLetter === "Q" && letter === "Q" ? (
               <Image
                 src="/Assets/question.svg"
-                width={100}
-                height={100}
+                width={75}
+                height={75}
                 alt="question"
                 quality={100}
                 className="inline-block"
@@ -42,8 +42,8 @@ const MainText = ({ setCursorImage }) => {
             ) : hoveredLetter === "U" && letter === "U" ? (
               <Image
                 src="/Assets/puzzle.svg"
-                width={75}
-                height={75}
+                width={50}
+                height={50}
                 alt="puzzle"
                 quality={100}
                 className="inline-block"
@@ -51,8 +51,8 @@ const MainText = ({ setCursorImage }) => {
             )  : hoveredLetter === "I" && letter === "I" ? (
               <Image
                 src="/Assets/bulb.svg"
-                width={100}
-                height={100}
+                width={75}
+                height={75}
                 alt="bulb"
                 quality={100}
                 className="inline-block"
@@ -60,8 +60,8 @@ const MainText = ({ setCursorImage }) => {
             ) : hoveredLetter === "Z" && (index === 3 || index === 4) ? (
               <Image
                 src="/Assets/pencil.svg"
-                width={100}
-                height={100}
+                width={75}
+                height={75}
                 alt="pencil"
                 quality={100}
                 className="inline-block"
@@ -69,8 +69,8 @@ const MainText = ({ setCursorImage }) => {
             ) : hoveredLetter === "O" && letter === "O" ? (
               <Image
                 src="/Assets/check.svg"
-                width={100}
-                height={100}
+                width={75}
+                height={75}
                 alt="check"
                 quality={100}
                 className="inline-block"
@@ -83,7 +83,7 @@ const MainText = ({ setCursorImage }) => {
       </h1>
 
       <motion.p
-        className="text-[1.6rem] font-semibold bg-secondary p-2 px-6 rounded-md text-white"
+        className="md:text-[1.6rem] text-md font-semibold bg-secondary p-2 px-6 rounded-md text-white"
         whileHover={{ backgroundColor: "#1E3A8A" }}
       >
         Streamline Quizzes, Simplify Learning!
