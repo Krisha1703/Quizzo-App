@@ -1,25 +1,21 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
 const CustomCursor = ({ image }) => {
-  const isClient = typeof window !== "undefined"; // Ensure window exists
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    if (!isClient) return; // Prevent running on the server
+    if (typeof window !== "undefined") {
+      const moveCursor = (e) => {
+        setPosition({ x: e.clientX, y: e.clientY });
+      };
 
-    const moveCursor = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener("mousemove", moveCursor);
-    return () => window.removeEventListener("mousemove", moveCursor);
-  }, [isClient]);
-
-  if (!isClient) return null; // Ensure it does not render on the server
+      window.addEventListener("mousemove", moveCursor);
+      return () => window.removeEventListener("mousemove", moveCursor);
+    }
+  }, []);
 
   return (
     <motion.div

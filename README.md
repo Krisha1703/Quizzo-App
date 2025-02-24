@@ -3,7 +3,7 @@
 ## 📋 Overview
 **Quizzo** is an interactive quiz web application built with **Next.js** (App Router) and **Tailwind CSS**. It allows users to answer multiple-choice questions, track their progress with visual indicators, and view a detailed result summary at the end.
 
-![quiz-1.png](/public/Screenshots/hero.png)
+![quiz-1.png](/public/Screenshots/hero-section.png)
 *Interactive navbar and hero section.*
 
 ![quiz-2.png](/public/Screenshots/join.png)
