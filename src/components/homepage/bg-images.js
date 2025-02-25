@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from 'next/image';
 
-const Images = () => {
+const Images = ({ signup }) => {
   return (
     <>
-    {/* Top image: Stays at the top */}
-    <Image 
+      {/* Top image: Stays at the top */}
+      <Image 
         src="/Assets/top-bar.png" 
         width={1000} 
         height={1000} 
@@ -23,25 +23,29 @@ const Images = () => {
       />
 
       {/* Globe Image */}
-      <Image 
-        src="/Assets/globe.png" 
-        width={100} 
-        height={100} 
-        alt="heading" 
-        className="absolute right-10 top-40 z-10 md:block hidden"
-      />
+      {!signup && (
+        <Image 
+          src="/Assets/globe.png" 
+          width={100} 
+          height={100} 
+          alt="heading" 
+          className="absolute right-10 top-40 z-10 md:block hidden"
+        />
+      )}
 
       {/* Puzzle Image */}
-      <Image 
-        src="/Assets/puzzle.png" 
-        width={100} 
-        height={100} 
-        alt="heading" 
-        className="absolute left-10 bottom-40 z-10 md:block hidden"
-      />
+      {!signup && (
+        <Image 
+          src="/Assets/puzzle.png" 
+          width={100} 
+          height={100} 
+          alt="heading" 
+          className="absolute left-10 bottom-40 z-10 md:block hidden"
+        />
+      )}
 
-       {/* Trophy Image */}
-       <Image 
+      {/* Trophy Image */}
+      <Image 
         src="/Assets/trophy.png" 
         width={75} 
         height={75} 
@@ -57,9 +61,8 @@ const Images = () => {
         alt="heading" 
         className="absolute left-0 bottom-0 w-full h-[12vh]"
       />
-      
     </>
-  )
-}
+  );
+};
 
-export default Images
+export default Images;
