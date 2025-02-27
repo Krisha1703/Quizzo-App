@@ -2,81 +2,60 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+const imageMap = {
+  Q: "/Assets/question.svg",
+  U: "/Assets/puzzle.svg",
+  I: "/Assets/bulb.svg",
+  Z: "/Assets/pencil.svg",
+  O: "/Assets/check.svg",
+};
+
 const MainText = ({ setCursorImage }) => {
-  const [hoveredLetter, setHoveredLetter] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="z-10 md:mx-10 mx-5 flex flex-col "
-      onMouseEnter={() => {
-        setCursorImage("/Assets/brain.png");
-      }}
-      onMouseLeave={() => {
-        setCursorImage(null); 
-      }}
+      className="z-10 md:mx-10 mx-5 flex flex-col"
+      onMouseEnter={() => setCursorImage("/Assets/brain.png")}
+      onMouseLeave={() => setCursorImage(null)}
     >
-      <h1 className="lg:text-[7rem] md:text-[5rem] text-[4rem] font-bold text-primary tracking-[0.1rem]">
+      <h1 className="lg:text-[7rem] md:text-[5rem] text-[4rem] font-bold text-primary tracking-[0.1rem] flex items-center">
         {["Q", "U", "I", "Z", "Z", "O"].map((letter, index) => (
           <motion.span
             key={index}
-            className="inline-block"
-            onMouseEnter={() => {
-              setHoveredLetter(letter);
-            }}
-            onMouseLeave={() => {
-              setHoveredLetter(null);
+            className="inline-flex items-center justify-center"
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+            layout
+            style={{
+              marginLeft: hoveredIndex === index - 1 ? "0.5rem" : "0",
+              marginRight: hoveredIndex === index + 1 ? "0.5rem" : "0",
             }}
           >
-            {hoveredLetter === "Q" && letter === "Q" ? (
-              <Image
-                src="/Assets/question.svg"
-                width={75}
-                height={75}
-                alt="question"
-                quality={100}
-                className="inline-block"
-              />
-            ) : hoveredLetter === "U" && letter === "U" ? (
-              <Image
-                src="/Assets/puzzle.svg"
-                width={50}
-                height={50}
-                alt="puzzle"
-                quality={100}
-                className="inline-block"
-              />
-            )  : hoveredLetter === "I" && letter === "I" ? (
-              <Image
-                src="/Assets/bulb.svg"
-                width={75}
-                height={75}
-                alt="bulb"
-                quality={100}
-                className="inline-block"
-              />
-            ) : hoveredLetter === "Z" && (index === 3 || index === 4) ? (
-              <Image
-                src="/Assets/pencil.svg"
-                width={75}
-                height={75}
-                alt="pencil"
-                quality={100}
-                className="inline-block"
-              />
-            ) : hoveredLetter === "O" && letter === "O" ? (
-              <Image
-                src="/Assets/check.svg"
-                width={75}
-                height={75}
-                alt="check"
-                quality={100}
-                className="inline-block"
-              />
+            {hoveredIndex === index && imageMap[letter] ? (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0}}
+                transition={{ duration: 0.2 , ease: "easeInOut" }}
+                className="inline-flex"
+              >
+                <Image
+                  src={imageMap[letter]}
+                  width={65}
+                  height={65}
+                  alt={letter}
+                  quality={100}
+                  className="inline-block"
+                />
+              </motion.div>
             ) : (
-              letter
+              <motion.span layout className="inline-block">
+                {letter}
+              </motion.span>
             )}
           </motion.span>
         ))}
