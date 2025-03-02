@@ -10,7 +10,6 @@ export const SignUpSchema = z.object({
     termsAccepted: z.boolean().refine(val => val === true, {
         message: "You must accept the terms and conditions"
     }),
-    recaptchaResponse: z.string().min(1, "reCAPTCHA verification is required"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",

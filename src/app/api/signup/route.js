@@ -13,25 +13,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: "Invalid request body" }), { status: 400 });
     }
 
-    const { recaptchaResponse, ...signupData } = body;
-
-    // reCAPTCHA Validation
-    if (!recaptchaResponse) {
-      return new Response(JSON.stringify({ error: "reCAPTCHA token is required" }), { status: 400 });
-    }
-
-    // Verify reCAPTCHA token
-    const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
-    const recaptchaVerifyUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${recaptchaResponse}`;
-
-    const recaptchaVerifyResponse = await fetch(recaptchaVerifyUrl, { method: "POST" });
-    const recaptchaVerifyData = await recaptchaVerifyResponse.json();
-
-    if (!recaptchaVerifyData.success) {
-      return new Response(JSON.stringify({ error: "reCAPTCHA verification failed" }), { status: 400 });
-    }
-
-    const parsedData = SignUpSchema.safeParse(signupData);
+    const parsedData = SignUpSchema.safeParse(body);
     if (!parsedData.success) {
       return new Response(JSON.stringify({ error: parsedData.error.errors || "Invalid input" }), { status: 400 });
     }
