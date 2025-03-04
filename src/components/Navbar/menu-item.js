@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const MenuItem = ({ title, create }) => {
+const MenuItem = ({ title, create, onClick }) => {
     return (
-      <div className="relative group cursor-pointer flex flex-col items-center">
+      <div className="relative group cursor-pointer flex flex-col items-center" onClick={onClick}>
         {/* Menu Text */}
         <motion.h1
           className="font-semibold text-xl text-primary group-hover:text-secondary"

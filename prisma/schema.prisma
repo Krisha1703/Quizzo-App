@@ -25,6 +25,8 @@ model User {
 
   teacher    Teacher? @relation
   student    Student? @relation
+
+   @@unique([email, password])
 }
 
 model Teacher {

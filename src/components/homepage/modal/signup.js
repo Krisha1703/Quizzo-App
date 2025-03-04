@@ -5,8 +5,10 @@ import ModalFooter from "./modal-footer";
 import Button from "@/components/Navbar/button";
 import { SignUpSchema } from "../../../../schema";
 import { z } from "zod";
+import MenuItem from "@/components/Navbar/menu-item";
+import Login from "./login";
 
-const Signup = ({ onClose }) => {
+const Signup = ({ onClose, onSwitchToLogin }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -58,9 +60,6 @@ const Signup = ({ onClose }) => {
       const data = await response.json();
       if (response.ok) {
         setSuccessMessage("Sign up successful! You can now log in to Quizzo.");
-        setTimeout(() => {
-          onClose(); 
-        }, 3000);
       } else {
         setErrors(data.error || {});
       }
@@ -175,8 +174,12 @@ const Signup = ({ onClose }) => {
         </div>
       )}
 
-      <div className="flex justify-end mb-20 -mt-10">
+      <div className="flex items-center gap-4 mb-20 -mt-10">
         <Button text="Sign Up" type="submit" onClick={handleSubmit} />
+        <MenuItem
+          title="Login"
+          onClick={onSwitchToLogin}
+        />
       </div>
       <ModalFooter />
     </div>
