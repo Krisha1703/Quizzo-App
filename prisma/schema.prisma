@@ -34,16 +34,35 @@ model Teacher {
   teacherId  String  @unique
   userId     String  @unique
   user       User    @relation(fields: [userId], references: [userId])
+  classes    Class[]  @relation("TeacherClasses")
 }
 
-model Student {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId 
-  studentId  String  @unique
-  userId     String  @unique
-  user       User    @relation(fields: [userId], references: [userId])
-}
+
 
 enum Role {
   Student
   Teacher
+}
+
+model Student {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId 
+  studentId  String   @unique
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [userId])
+}
+
+model Class {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  classId          String   @unique
+  teacherId        String
+  teacher          Teacher  @relation(fields: [teacherId], references: [teacherId], name: "TeacherClasses")
+
+  name             String
+  description      String?
+  learningOutcomes String?
+  schedule         String?
+  classCode        String   @unique
+  createdAt        DateTime @default(now())
+
+  studentIds       String[] @db.ObjectId // List of student ObjectIds
 }

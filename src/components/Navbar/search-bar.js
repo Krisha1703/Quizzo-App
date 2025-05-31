@@ -9,7 +9,7 @@ const SearchBar = () => {
     <div className="flex justify-center items-center w-full">
       <TextField
         variant="filled"
-        placeholder="Search quiz..."
+        placeholder="Search..."
         fullWidth
         onFocus={() => setFocused(true)} 
         onBlur={() => setFocused(false)} 

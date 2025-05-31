@@ -20,3 +20,12 @@ export const LoginSchema = z.object({
   email: z.string().email("Invalid email format"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+export const CreateClassSchema = z.object({
+  name: z.string().min(1, "Class name is required"),
+  description: z.string().optional(),
+  learningOutcomes: z.string().optional(),
+  schedule: z.string().optional(),
+  teacherName: z.string().min(1, "Teacher name is required"),
+  classCode: z.string().min(4).max(10).optional(),
+});

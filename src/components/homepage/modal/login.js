@@ -5,6 +5,7 @@ import Button from "@/components/Navbar/button";
 import { z } from "zod";
 import MenuItem from "@/components/Navbar/menu-item";
 import { LoginSchema } from "../../../../schema";
+import { useRouter } from "next/navigation";
 
 const Login = ({ onClose, onSwitchToSignup }) => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const Login = ({ onClose, onSwitchToSignup }) => {
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+  const router = useRouter();
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -38,6 +41,16 @@ const Login = ({ onClose, onSwitchToSignup }) => {
       // Handle server-side validation and error messages
       if (response.ok) {
         setSuccessMessage("Login successful! Redirecting...");
+
+         setTimeout(() => {
+          const role = data.user.role.toLowerCase(); 
+          localStorage.setItem("user", JSON.stringify(data.user));
+          if (role === "teacher") {
+            router.push("/classes/teacher");
+          } else {
+            router.push("/classes/student");
+          }
+        }, 1000);
       } else {
         setErrors({
           general: data.error?.message || "Something went wrong, please try again.",
@@ -96,7 +109,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
       </div>
 
       {successMessage && (
-        <div className="text-green-500 text-center font-semibold mt-4">
+        <div className="text-green-500 text-center font-semibold mb-4">
           {successMessage}
         </div>
       )}
