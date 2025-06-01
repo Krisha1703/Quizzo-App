@@ -12,6 +12,29 @@
 ![quiz-3.png](/public/Screenshots/cards.png)
 *Quiz cards.*
 
+## 🧑‍🏫 Class Dashboard & Add-ons
+
+Once logged in, users see a dashboard based on their role — **Teacher** or **Student**.
+
+### 🔍 Class Overview Table
+- Lists all classes created or joined
+- Shows name, code, schedule, learning outcomes
+- Provides options to **edit**, **delete** (for teachers), or **leave** (for students)
+
+### 📝 Notepad (Sticky Notes)
+- Button on **bottom-right corner**
+- Opens a modal to add self-notes or tasks
+- Users can strike through tasks when completed
+- Notes are saved locally per session
+
+### 💡 Fact of the Day
+- Button on **bottom-left corner**
+- Displays an interesting daily fact
+- Users can rate the fact using emoji reactions (😍 😐 😴)
+
+![quiz-dashboard.png](/public/Screenshots/dashboard.png)  
+*Role-based dashboard with Notepad and Fact of the Day popup.*
+
 ## 🖥️ Tech Stack
 - **Frontend:** Next.js ⚡, Tailwind CSS 🎨, Framer Motion 🖼️
 - **API Integration:** Fetching quiz data from REST APIs 🌐
@@ -48,6 +71,18 @@
 
 - ✅ **Interactive UI:** Smooth animations, consistent design, and an intuitive layout for an immersive experience.
 - ✅ **User-Friendly:** Simple navigation and easy-to-understand gameplay mechanics.
+
+## 🔐 Demo Credentials
+
+### 👨‍🏫 Teacher
+- **Email:** `shrutibhatt09@gmail.com`  
+- **Password:** `shruti09`
+
+### 👩‍🎓 Student
+- **Email:** `lucy001@mail.com`  
+- **Password:** `lucy001`
+
+> Use the above credentials to log in and try the complete dashboard functionality.
 
 ## 🛠️ Installation
 1. Clone the repository:
