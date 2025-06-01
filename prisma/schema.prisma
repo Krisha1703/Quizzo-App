@@ -64,5 +64,5 @@ model Class {
   classCode        String   @unique
   createdAt        DateTime @default(now())
 
-  studentIds       String[] @db.ObjectId // List of student ObjectIds
+  studentIds       String[] 
 }

@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import MenuItem from "@/components/Navbar/menu-item";
@@ -14,6 +15,8 @@ const Navbar = () => {
   const [initials, setInitials] = useState(null);
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
+  const [userRole, setUserRole] = useState(null);
+  const [joinCode, setJoinCode] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -26,6 +29,7 @@ const Navbar = () => {
         setInitials(userInitials.toUpperCase());
         setFirst(firstName);
         setLast(lastName);
+        setUserRole(user.role);
       }
     }
   }, []);
@@ -36,11 +40,27 @@ const Navbar = () => {
   const openSignupModal = () => setActiveModal("signup");
   const closeModal = () => setActiveModal(null);
 
+  const handleJoinClass = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await fetch("/api/class/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ classCode: joinCode, studentId: user.userId }),
+      });
+      const result = await response.json();
+      alert(result.message || result.error);
+      setJoinCode("");
+      closeModal();
+    } catch (error) {
+      alert("Failed to join class.");
+    }
+  };
+
   return (
     <div className="relative z-50 bg-white">
       {/* Desktop Navbar */}
       <div className="hidden lg:flex items-center justify-between p-4 py-1 mx-5">
-        {/* Logo */}
         <Image
           src="/Assets/hovered-logo.png"
           width={120}
@@ -49,21 +69,21 @@ const Navbar = () => {
           className="cursor-pointer"
         />
 
-        {/* Menu Items */}
-  
-          <MenuItem title="Classes" create />
-          <MenuItem title="Quizzes" create />
-          
+        <MenuItem title="Classes" create />
+        <MenuItem title="Quizzes" create />
 
-        {/* Search Bar */}
         <div className="flex-1 max-w-sm">
           <SearchBar />
         </div>
 
-        <MenuItem title="+ Create" create onClick={openSignupModal}/>
-          <MenuItem title="FAQs" create />
+        {userRole === "Teacher" ? (
+          <MenuItem title="+ Create" create onClick={openSignupModal} />
+        ) : (
+          <MenuItem title="Join Class" create onClick={() => setActiveModal("join")} />
+        )}
 
-        {/* User Initials or Login Button */}
+        <MenuItem title="FAQs" create />
+
         {initials ? (
           <div className="bg-secondary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">
             {initials}
@@ -75,7 +95,6 @@ const Navbar = () => {
 
       {/* Mobile Navbar */}
       <div className="flex lg:hidden items-center justify-between p-4 mx-5">
-        {/* Logo */}
         <Image
           src="/Assets/hovered-logo.png"
           width={100}
@@ -83,14 +102,11 @@ const Navbar = () => {
           alt="logo"
           className="cursor-pointer"
         />
-
-        {/* Hamburger Icon */}
         <IconButton onClick={toggleMenu} color="primary" aria-label="menu">
           <MenuIcon />
         </IconButton>
       </div>
 
-      {/* Drawer for Mobile Menu */}
       <Drawer
         anchor="right"
         open={isMenuOpen}
@@ -108,20 +124,23 @@ const Navbar = () => {
           },
         }}
       >
-        {/* Close Button */}
         <div className="flex justify-end mb-4">
           <IconButton onClick={toggleMenu} aria-label="close menu">
             <CloseIcon />
           </IconButton>
         </div>
 
-        {/* Drawer Menu Items */}
         <MenuItem title="Classes" create />
         <MenuItem title="Quizzes" create />
-        <MenuItem title="+ Create" create />
+
+        {userRole === "Teacher" ? (
+          <MenuItem title="+ Create" create onClick={openSignupModal} />
+        ) : (
+          <MenuItem title="Join Class" create onClick={() => setActiveModal("join")} />
+        )}
+
         <MenuItem title="FAQs" create />
 
-        {/* User Name or Login Button */}
         {first || last ? (
           <div className="bg-secondary text-white rounded-md w-40 h-10 flex items-center mx-5 px-7 font-bold">
             {first} {last}
@@ -131,7 +150,6 @@ const Navbar = () => {
         )}
       </Drawer>
 
-      {/* Modal for Login or Signup */}
       <Modal open={!!activeModal} onClose={closeModal}>
         <Box
           sx={{
@@ -152,11 +170,28 @@ const Navbar = () => {
               onClose={closeModal}
               onSwitchToLogin={() => setActiveModal("login")}
             />
-          ) : (
+          ) : activeModal === "login" ? (
             <Login
               onClose={closeModal}
               onSwitchToSignup={() => setActiveModal("signup")}
             />
+          ) : (
+            <Box sx={{ p: 4 }}>
+              <h2>Join a Class</h2>
+              <input
+                type="text"
+                placeholder="Enter Class Code"
+                value={joinCode}
+                onChange={(e) => setJoinCode(e.target.value)}
+                className="border p-2 w-full my-4"
+              />
+              <button
+                onClick={handleJoinClass}
+                className="bg-blue-600 text-white px-4 py-2 rounded"
+              >
+                Join
+              </button>
+            </Box>
           )}
         </Box>
       </Modal>
