@@ -5,26 +5,49 @@ import { useEffect, useState } from "react";
 export default function ClassList() {
   const [classes, setClasses] = useState([]);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
-    const fetchClasses = async () => {
-      try {
-        const res = await fetch("/api/class/list");
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.error || "Failed to load");
-
-        setClasses(data.classes);
-      } catch (err) {
-        setError(err.message);
+    if (typeof window !== "undefined") {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        setUserRole(user.role);
+        setUserId(user.userId);
       }
-    };
-
-    fetchClasses();
+    }
   }, []);
 
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchClasses = async () => {
+        try {
+            const res = await fetch(`/api/class/list?userId=${userId}`);
+
+            if (!res.ok) {
+            const errorData = await res.json().catch(() => ({})); 
+            throw new Error(errorData.error || "Failed to load");
+            }
+
+            const data = await res.json();
+            setClasses(data.classes);
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+        };
+
+
+    fetchClasses();
+  }, [userId]);
+
+  if (loading) return <p>Loading classes...</p>;
   if (error) return <p className="text-red-600">Error: {error}</p>;
-  if (!classes.length) return <p>Loading or no classes found.</p>;
+  if (!classes.length) return <p>No classes found for your account.</p>;
 
   return (
     <div className="space-y-4">

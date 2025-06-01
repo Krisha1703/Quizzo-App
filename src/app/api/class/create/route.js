@@ -4,7 +4,7 @@ import { db } from "../../../../../lib/db";
 import { CreateClassSchema } from "../../../../../schema";
 
 const generateClassId = () => `CLS${Date.now().toString().slice(-6)}`;
-const generateClassCode = () => Math.random().toString(36).substring(2, 8).toUpperCase(); // 6-char alphanumeric
+const generateClassCode = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
 export async function POST(req) {
   try {
@@ -61,7 +61,7 @@ export async function POST(req) {
       },
     });
 
-    return new Response(JSON.stringify({ message: "Class created successfully" }), { status: 201 });
+    return new Response(JSON.stringify({ message: "Class created successfully", classCode: newClass.classCode, }), { status: 201 });
   } catch (error) {
     console.error("Create Class Error:", error);
     return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });

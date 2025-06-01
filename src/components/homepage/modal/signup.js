@@ -169,7 +169,7 @@ const Signup = ({ onClose, onSwitchToLogin }) => {
 
       {/* Success message */}
       {successMessage && (
-        <div className="text-green-500 text-center font-semibold mt-4">
+        <div className="text-green-500 text-center font-semibold mb-10">
           {successMessage}
         </div>
       )}
