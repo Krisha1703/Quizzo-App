@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import EditClass from "@/components/dashboard/edit-class"; 
 
 export default function ClassList() {
   const [classes, setClasses] = useState([]);
@@ -9,6 +10,8 @@ export default function ClassList() {
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState(null);
   const menuRef = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeModal, setActiveModal] = useState(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -53,8 +56,13 @@ export default function ClassList() {
   }, []);
 
 
-  const handleEdit = (classId) => {
-    alert(`Edit class ${classId}`);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const openEditModal = () => setActiveModal("edit");
+  const closeModal = () => setActiveModal(null);
+
+  const handleEdit = () => {
+    openEditModal();
   };
 
    const handleExport = (classId) => {
@@ -121,9 +129,20 @@ export default function ClassList() {
           <div className="relative">
             {/* Actions Column with Icons */}
             <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
-              <button onClick={() => handleEdit(cls.classId)} className="hover:scale-105 transition-transform">
+              <button onClick={openEditModal} className="hover:scale-105 transition-transform">
                 <Image src="/Assets/edit.svg" alt="Edit" width={30} height={30}/>
               </button>
+              {activeModal === "edit" && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
+                  <div className="relative bg-white rounded-lg shadow-xl p-6 max-w-3xl w-full">
+                    <EditClass
+                      onClose={closeModal}
+                      classId={cls.classId}
+                    />
+                  </div>
+                </div>
+              )}
+
               <button onClick={() => handleDelete(cls.classId)} className="hover:scale-105 transition-transform">
                 <Image src="/Assets/delete.svg" alt="Delete" width={27} height={27} />
               </button>
