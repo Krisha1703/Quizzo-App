@@ -23,7 +23,7 @@ const Instruction = () => {
         <li>If the timer finishes, your quiz will be <strong>saved and submitted automatically</strong>.</li>
         <li>A detailed solution and explanation will be provided at the end of each question.</li>
         <li>Ensure a <strong>stable internet connection</strong> for the best experience.</li>
-        <li>Click the <strong>"Start Quiz"</strong> button to begin.</li>
+        <li>Click the <strong>Start Quiz</strong> button to begin.</li>
       </ul>
 
        {/* Start Quiz Button with Primary Background */}
