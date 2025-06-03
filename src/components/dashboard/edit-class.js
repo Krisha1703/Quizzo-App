@@ -118,13 +118,12 @@ const EditClass = ({ classId, onClose }) => {
   const allFieldsFilled = formData.name && formData.description && formData.teacherName;
 
   return (
-    <div className="w-5/6 mx-auto bg-white z-50">
+    <div className="w-full max-w-5xl mx-auto bg-white z-50 px-4 sm:px-6 lg:px-8">
       <ModalHeader onClose={onClose} />
-      <div className="overflow-y-auto min-h-[70vh] max-h-[90vh] p-4">
-        <form onSubmit={handleSave} className="grid grid-cols-2 gap-6 mt-20">
-
+      <div className="overflow-y-auto min-h-[70vh] max-h-[90vh] py-4 hide-scrollbar">
+        <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-20">
           {/* Class Name */}
-          <div className="col-span-2">
+          <div>
             <label className="block text-sm font-medium">Class Name</label>
             <input
               type="text"
@@ -136,8 +135,20 @@ const EditClass = ({ classId, onClose }) => {
             {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
+          {/* Teacher Name */}
+          <div>
+            <label className="block text-sm font-medium">Teacher</label>
+            <input
+              type="text"
+              name="teacherName"
+              value={formData.teacherName}
+              readOnly
+              className="w-full mt-1 p-2 border border-gray-200 bg-gray-100 rounded cursor-not-allowed"
+            />
+          </div>
+
           {/* Description */}
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium">Description</label>
             <textarea
               name="description"
@@ -150,9 +161,9 @@ const EditClass = ({ classId, onClose }) => {
           </div>
 
           {/* Learning Outcomes */}
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium">Learning Outcomes</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <input
                 type="text"
                 value={newOutcome}
@@ -160,21 +171,42 @@ const EditClass = ({ classId, onClose }) => {
                 className="flex-grow p-2 border border-gray-300 rounded"
                 placeholder="Add outcome"
               />
-              <button type="button" onClick={handleAddOutcome} className="bg-blue-500 text-white px-3 rounded">
+              <button type="button" onClick={handleAddOutcome} className="bg-blue-500 text-white px-4 py-2 rounded">
                 Add
               </button>
             </div>
-            <ul className="list-disc ml-5">
+            <ul className="list-disc ml-5 space-y-2">
               {formData.learningOutcomes.map((item, idx) => (
-                <li key={idx}>{item}</li>
+                <li key={idx} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...formData.learningOutcomes];
+                      updated[idx] = e.target.value;
+                      setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
+                    }}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = formData.learningOutcomes.filter((_, i) => i !== idx);
+                      setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
+                    }}
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
 
           {/* Schedule */}
-          <div className="col-span-2">
+          <div className="md:col-span-2">
             <label className="block text-sm font-medium">Schedule</label>
-            <div className="flex gap-2 mb-2">
+            <div className="flex flex-col sm:flex-row gap-2 mb-2">
               <select
                 value={newSchedule.day}
                 onChange={(e) => setNewSchedule((prev) => ({ ...prev, day: e.target.value }))}
@@ -194,31 +226,40 @@ const EditClass = ({ classId, onClose }) => {
                 onChange={(e) => setNewSchedule((prev) => ({ ...prev, time: e.target.value }))}
                 className="flex-grow p-2 border border-gray-300 rounded"
               />
-              <button type="button" onClick={handleAddSchedule} className="bg-blue-500 text-white px-3 rounded">
+              <button type="button" onClick={handleAddSchedule} className="bg-blue-500 text-white px-4 py-2 rounded">
                 Add
               </button>
             </div>
-            <ul className="list-disc ml-5">
+            <ul className="list-disc ml-5 space-y-2">
               {formData.schedule.map((item, idx) => (
-                <li key={idx}>{item}</li>
+                <li key={idx} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                  <input
+                    type="text"
+                    value={item}
+                    onChange={(e) => {
+                      const updated = [...formData.schedule];
+                      updated[idx] = e.target.value;
+                      setFormData((prev) => ({ ...prev, schedule: updated }));
+                    }}
+                    className="w-full p-2 border border-gray-300 rounded"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const updated = formData.schedule.filter((_, i) => i !== idx);
+                      setFormData((prev) => ({ ...prev, schedule: updated }));
+                    }}
+                    className="text-red-500 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </li>
               ))}
             </ul>
           </div>
 
-          {/* Teacher Name (Read-only) */}
-          <div className="col-span-2">
-            <label className="block text-sm font-medium">Teacher</label>
-            <input
-              type="text"
-              name="teacherName"
-              value={formData.teacherName}
-              readOnly
-              className="w-full mt-1 p-2 border border-gray-200 bg-gray-100 rounded cursor-not-allowed"
-            />
-          </div>
-
           {/* Save Button and Feedback */}
-          <div className="col-span-2 mt-4">
+          <div className="md:col-span-2 mt-4">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: allFieldsFilled ? 1 : 0, y: allFieldsFilled ? 0 : 10 }}
