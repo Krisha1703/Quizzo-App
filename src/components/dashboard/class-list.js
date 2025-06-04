@@ -17,14 +17,26 @@ export default function ClassList() {
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [mobileMenuOpenId, setMobileMenuOpenId] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  const [actionMenuOpen, setActionMenuOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const user = JSON.parse(storedUser);
       setUserId(user.userId);
+      setUserRole(user.role);
+      if (user.role == "Teacher") {
+        setActionMenuOpen(true);
+      }
+      else {
+        setActionMenuOpen(false); 
+      }
     }
   }, []);
+
+  console.log("User ID:", userId);
+  console.log("User Role:", userRole);
 
   useEffect(() => {
     if (!userId) return;
@@ -146,21 +158,43 @@ const handleExport = (classId) => {
             <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate">
               {cls.schedule || "-"}
             </div>
+
             <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
-              <button onClick={() => openModal("edit", cls.classId)}>
-                <Image src="/Assets/edit.svg" alt="Edit" width={30} height={30} />
-              </button>
-              <button onClick={() => openModal("delete", cls.classId)}>
-                <Image src="/Assets/delete.svg" alt="Delete" width={27} height={27} />
-              </button>
-              <button onClick={() => openModal("share", cls.classId)}>
-                <Image src="/Assets/share.svg" alt="Share" width={25} height={25} />
-              </button>
-              <button onClick={() => handleExport(cls.classId)}>
-                <Image src="/Assets/download.svg" alt="Export" width={23} height={23} />
-              </button>
+              {(
+                actionMenuOpen
+                  ? [
+                      { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
+                      { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
+                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
+                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                    ]
+                  : [
+                      { name: "view", icon: "/Assets/View.svg", alt: "View", width: 30, height: 30 },
+                      { name: "leave", icon: "/Assets/Leave.svg", alt: "Leave", width: 27, height: 27 },
+                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
+                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                    ]
+              ).map((action) => (
+                <button
+                  key={action.name}
+                  onClick={() => {
+                    if (action.name === "export") handleExport(cls.classId);
+                    else openModal(action.name, cls.classId);
+                  }}
+                >
+                  <Image
+                    src={action.icon}
+                    alt={action.alt}
+                    width={action.width}
+                    height={action.height}
+                  />
+                </button>
+              ))}
             </div>
+
+
           </div>
+          
 
           {/* Mobile */}
           <div className="md:hidden bg-secondary text-white rounded-lg p-4">
@@ -176,18 +210,36 @@ const handleExport = (classId) => {
               </button>
               {mobileMenuOpenId === cls.classId && (
                 <div className="absolute right-0 m-5 bg-white rounded shadow-lg p-2 flex flex-col gap-3 z-10">
-                  <button onClick={() => openModal("edit", cls.classId)}>
-                    <Image src="/Assets/edit.svg" alt="Edit" width={24} height={24} />
-                  </button>
-                  <button onClick={() => openModal("delete", cls.classId)}>
-                    <Image src="/Assets/delete.svg" alt="Delete" width={24} height={24} />
-                  </button>
-                  <button onClick={() => openModal("share", cls.classId)}>
-                    <Image src="/Assets/share.svg" alt="Share" width={24} height={24} />
-                  </button>
-                  <button onClick={() => handleExport(cls.classId)}>
-                    <Image src="/Assets/download.svg" alt="Export" width={24} height={24} />
-                  </button>
+                 {(
+                actionMenuOpen
+                  ? [
+                      { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
+                      { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
+                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
+                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                    ]
+                  : [
+                      { name: "view", icon: "/Assets/View.svg", alt: "View", width: 30, height: 30 },
+                      { name: "leave", icon: "/Assets/Leave.svg", alt: "Leave", width: 27, height: 27 },
+                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
+                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                    ]
+              ).map((action) => (
+                <button
+                  key={action.name}
+                  onClick={() => {
+                    if (action.name === "export") handleExport(cls.classId);
+                    else openModal(action.name, cls.classId);
+                  }}
+                >
+                  <Image
+                    src={action.icon}
+                    alt={action.alt}
+                    width={action.width}
+                    height={action.height}
+                  />
+                </button>
+              ))}
                 </div>
               )}
             </div>
