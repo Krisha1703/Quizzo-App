@@ -6,6 +6,7 @@ import EditClass from "@/components/dashboard/edit-class";
 import { EllipsisVertical } from "lucide-react";
 import { saveAs } from "file-saver";
 import ModalHeader from "@/components/homepage/modal/modal-header";
+import { useRouter } from "next/navigation";
 
 
 export default function ClassList() {
@@ -19,6 +20,7 @@ export default function ClassList() {
   const [copied, setCopied] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -169,27 +171,33 @@ const handleExport = (classId) => {
                       { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
                     ]
                   : [
-                      { name: "view", icon: "/Assets/View.svg", alt: "View", width: 30, height: 30 },
-                      { name: "leave", icon: "/Assets/Leave.svg", alt: "Leave", width: 27, height: 27 },
+                     { name: "enter", custom: true },
                       { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
-                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+              
                     ]
               ).map((action) => (
                 <button
                   key={action.name}
                   onClick={() => {
-                    if (action.name === "export") handleExport(cls.classId);
+                    if (action.name === "enter") {
+                      router.push(`/class/${cls.classId}`);
+                    }
+                    else if (action.name === "export") handleExport(cls.classId);
                     else openModal(action.name, cls.classId);
                   }}
+                  className={action.custom ? "bg-primary text-white px-3 py-1 rounded hover:bg-primary/90" : ""}
                 >
-                  <Image
-                    src={action.icon}
-                    alt={action.alt}
-                    width={action.width}
-                    height={action.height}
-                  />
+                  {action.custom ? "Enter Class" : (
+                    <Image
+                      src={action.icon}
+                      alt={action.alt}
+                      width={action.width}
+                      height={action.height}
+                    />
+                  )}
                 </button>
               ))}
+              
             </div>
 
 
@@ -219,7 +227,7 @@ const handleExport = (classId) => {
                       { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
                     ]
                   : [
-                      { name: "view", icon: "/Assets/View.svg", alt: "View", width: 30, height: 30 },
+                      { name: "enter", icon: "/Assets/Enter.svg", alt: "Enter", width: 30, height: 30 },
                       { name: "leave", icon: "/Assets/Leave.svg", alt: "Leave", width: 27, height: 27 },
                       { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
                       { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
