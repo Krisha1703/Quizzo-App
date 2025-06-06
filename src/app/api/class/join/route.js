@@ -1,59 +1,35 @@
 import { db } from "../../../../../lib/db";
-import { NextResponse } from "next/server";
+import { getClassByCode } from "../../../../../utils/class";
+import { getStudentByUserId } from "../../../../../utils/student";
 
 export async function POST(req) {
   try {
     const body = await req.json();
     const { classCode, studentId: userId } = body;
 
-    console.log("[DEBUG] Request body:", body);
-
     if (!classCode || !userId) {
-      return NextResponse.json({ error: "Missing classCode or studentId" }, { status: 400 });
+      return new Response(JSON.stringify({ error: "Missing classCode or studentId" }), { status: 400 });
     }
 
-    // Find class by classCode
-    const cls = await db.class.findUnique({
-      where: { classCode },
-    });
-
+    const cls = await getClassByCode(classCode);
     if (!cls) {
-      return NextResponse.json({ error: "Class not found" }, { status: 404 });
+      return new Response(JSON.stringify({ error: "Class not found" }), { status: 404 });
     }
 
- 
-    const student = await db.student.findUnique({
-      where: { userId },  
-    });
-    console.log("[DEBUG] Found student:", student);
-
+    const student = await getStudentByUserId(userId);
     if (!student) {
-      return NextResponse.json({ error: "Student not found for this userId" }, { status: 404 });
+      return new Response(JSON.stringify({ error: "Student not found for this userId" }), { status: 404 });
     }
-
-    // Destructure student fields
-    const { id, studentId, userId: linkedUserId } = student;
-
-    console.log("[DEBUG] student.id (Mongo ObjectId):", id);
-    console.log("[DEBUG] student.studentId (Custom ID):", studentId);
-    console.log("[DEBUG] student.userId (Linked User ID):", linkedUserId);
-
 
     const studentObjectId = student.studentId;
-
-    // Validate format 
     if (!studentObjectId) {
-      return NextResponse.json({ error: "Invalid student ObjectId" }, { status: 400 });
+      return new Response(JSON.stringify({ error: "Invalid student ObjectId" }), { status: 400 });
     }
 
-    // Check if student already joined
-    const alreadyJoined = cls.studentIds.includes(studentObjectId);
-
-    if (alreadyJoined) {
-      return NextResponse.json({ error: "Student already joined this class" }, { status: 409 });
+    if (cls.studentIds.includes(studentObjectId)) {
+      return new Response(JSON.stringify({ error: "Student already joined this class" }), { status: 409 });
     }
 
-    // Add studentId to studentIds array
     await db.class.update({
       where: { classId: cls.classId },
       data: {
@@ -63,9 +39,9 @@ export async function POST(req) {
       },
     });
 
-    return NextResponse.json({ message: "Class joined successfully" });
+    return new Response(JSON.stringify({ message: "Class joined successfully" }), { status: 200 });
   } catch (error) {
     console.error("[ERROR] Error joining class:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
   }
 }

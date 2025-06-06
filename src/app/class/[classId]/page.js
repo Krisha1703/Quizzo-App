@@ -73,7 +73,7 @@ const ClassPage = () => {
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
-          <nav className="space-y-2 mt-16">
+          <nav className="space-y-8 mt-16">
             {tabs.map((tab) => (
               <div key={tab.key} onClick={() => {
                 setActiveTab(tab.key);

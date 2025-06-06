@@ -1,6 +1,7 @@
-import { db } from "../../../../lib/db";
-import bcrypt from "bcryptjs";
+"use server";
+
 import { LoginSchema } from "../../../../schema";
+import { loginUser } from "../../../../utils/user";
 
 export async function POST(req) {
   try {
@@ -22,25 +23,11 @@ export async function POST(req) {
 
     const { email, password } = parsedData.data;
 
-    // Find the first user matching the email
-    const user = await db.user.findFirst({
-      where: {
-        email: email,
-      },
-    });
+    const result = await loginUser({ email, password });
 
-    if (!user) {
+    if (result.error) {
       return new Response(
-        JSON.stringify({ error: { message: "Invalid email or password" } }),
-        { status: 401 }
-      );
-    }
-
-    // Compare password with the hashed password stored in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return new Response(
-        JSON.stringify({ error: { message: "Invalid email or password" } }),
+        JSON.stringify({ error: { message: result.error } }),
         { status: 401 }
       );
     }
@@ -48,7 +35,7 @@ export async function POST(req) {
     return new Response(
       JSON.stringify({
         message: "Login successful",
-        user: { email: user.email, role: user.role, firstName: user.firstName, lastName: user.lastName, userId: user.userId },
+        user: result.user,
       }),
       { status: 200 }
     );

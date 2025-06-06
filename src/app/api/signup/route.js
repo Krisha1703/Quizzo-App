@@ -1,56 +1,50 @@
 "use server";
 
-import { db } from "../../../../lib/db";
-import bcrypt from "bcryptjs";
 import { SignUpSchema } from "../../../../schema";
-
-const generateId = (prefix) => `${prefix}${Date.now().toString().slice(-6)}`;
+import { createUser, isUserExists } from "../../../../utils/user";
+import { generateId } from "../../../../utils/generateIds";
 
 export async function POST(req) {
   try {
     const body = await req.json().catch(() => null);
     if (!body) {
-      return new Response(JSON.stringify({ error: "Invalid request body" }), { status: 400 });
+      return new Response(JSON.stringify({ error: "Invalid request body" }), {
+        status: 400,
+      });
     }
 
     const parsedData = SignUpSchema.safeParse(body);
     if (!parsedData.success) {
-      return new Response(JSON.stringify({ error: parsedData.error.errors || "Invalid input" }), { status: 400 });
+      return new Response(
+        JSON.stringify({ error: parsedData.error.errors || "Invalid input" }),
+        { status: 400 }
+      );
     }
 
     const { firstName, lastName, email, password, role } = parsedData.data;
-
-    const userId = generateId("U");
     
-    // Check if the user already exists
-    const existingUser = await db.user.findUnique({ where: { userId } });
+    const userId = generateId("U");
+
+    const existingUser = await isUserExists(email);
+
     if (existingUser) {
-      return new Response(JSON.stringify({ error: "User already exists" }), { status: 400 });
+      return new Response(
+        JSON.stringify({ error: "Email is already registered" }),
+        { status: 400 }
+      );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    await createUser({ firstName, lastName, email, password, role, userId });
 
-    // Create the user
-    const newUser = await db.user.create({
-      data: { firstName, lastName, email, password: hashedPassword, userId, role },
-    });
-
-    // Create Teacher or Student record based on role
-    if (role === "Teacher") {
-      await db.teacher.create({
-        data: { userId: newUser.userId, teacherId: generateId("T") },
-      });
-    }
-
-    if (role === "Student") {
-      await db.student.create({
-        data: { userId: newUser.userId, studentId: generateId("S") },
-      });
-    }
-
-    return new Response(JSON.stringify({ message: "User registered successfully" }), { status: 201 });
+    return new Response(
+      JSON.stringify({ message: "User registered successfully" }),
+      { status: 201 }
+    );
   } catch (error) {
     console.error("Signup Error:", error.toString());
-    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+    return new Response(
+      JSON.stringify({ error: "Internal server error" }),
+      { status: 500 }
+    );
   }
 }

@@ -1,4 +1,5 @@
-import { db } from "../../../../../lib/db";
+import { getUserByUserId } from "../../../../../utils/user";
+import { getTeacherClasses, getStudentClasses } from "../../../../../utils/class";
 
 export async function GET(req) {
   try {
@@ -6,63 +7,23 @@ export async function GET(req) {
     const userId = searchParams.get("userId");
 
     if (!userId) {
-      return new Response(
-        JSON.stringify({ error: "Missing userId" }),
-        { status: 400 }
-      );
+      return new Response(JSON.stringify({ error: "Missing userId" }), { status: 400 });
     }
 
-    // Find user by userId
-    const user = await db.user.findUnique({
-      where: { userId },
-      include: {
-        teacher: true,
-        student: true,
-      },
-    });
+    const user = await getUserByUserId(userId);
 
     if (!user) {
-      return new Response(
-        JSON.stringify({ error: "User not found" }),
-        { status: 404 }
-      );
+      return new Response(JSON.stringify({ error: "User not found" }), { status: 404 });
     }
 
     let classes = [];
 
     if (user.role === "Teacher" && user.teacher) {
-      // Find classes where teacherId matches
-      classes = await db.class.findMany({
-        where: { teacherId: user.teacher.teacherId },
-        include: {
-          teacher: {
-            include: {
-              user: true,
-            },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      });
+      classes = await getTeacherClasses(user.teacher.teacherId);
     } else if (user.role === "Student" && user.student) {
-      // Find classes where studentIds array contains the student's studentId
-      classes = await db.class.findMany({
-        where: {
-          studentIds: {
-            has: user.student.studentId,
-          },
-        },
-        include: {
-          teacher: {
-            include: {
-              user: true,
-            },
-          },
-        },
-        orderBy: { createdAt: "desc" },
-      });
+      classes = await getStudentClasses(user.student.studentId);
     }
 
-    // Format the classes data to return
     const formatted = classes.map((cls) => ({
       classId: cls.classId,
       classCode: cls.classCode,
@@ -81,15 +42,9 @@ export async function GET(req) {
         : null,
     }));
 
-    return new Response(
-      JSON.stringify({ classes: formatted }),
-      { status: 200 }
-    );
+    return new Response(JSON.stringify({ classes: formatted }), { status: 200 });
   } catch (error) {
     console.error("Error fetching classes:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch classes" }),
-      { status: 500 }
-    );
+    return new Response(JSON.stringify({ error: "Failed to fetch classes" }), { status: 500 });
   }
 }

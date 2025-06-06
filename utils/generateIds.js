@@ -1,5 +1,4 @@
-export const generateUniqueId = (prefix) => {
-    const randomNum = Math.floor(100000 + Math.random() * 900000); 
-    return `${prefix}${randomNum}`;
-  };
-  
+// Generate a unique ID based on the current timestamp
+export const generateId = (prefix) => {
+  return `${prefix}${Date.now().toString().slice(-6)}`;
+};

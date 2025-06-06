@@ -37,8 +37,6 @@ export default function ClassList() {
     }
   }, []);
 
-  console.log("User ID:", userId);
-  console.log("User Role:", userRole);
 
   useEffect(() => {
     if (!userId) return;
@@ -123,19 +121,15 @@ const handleExport = (classId) => {
   if (error) return <p className="text-red-600">Error: {error}</p>;
   if (!classes.length) return <p>No classes found for your account.</p>;
 
-  const headerTitles = [
-    "Class Name",
-    "Created At",
-    "Students",
-    "Class Code",
-    "Schedule",
-    "Actions",
-  ];
+const headerTitles = userRole === "Teacher"
+  ? ["Class Name", "Created At", "Students", "Class Code", "Schedule", "Actions"]
+  : ["Class Name", "Created At", "Students", "Class Code", "Schedule"];
+
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-4">
       {/* Header */}
-      <div className="hidden md:grid grid-cols-6 gap-4">
+      <div className={`hidden md:grid ${userRole === "Teacher" ? "grid-cols-6" : "grid-cols-5"} gap-4`}>
         {headerTitles.map((title) => (
           <div
             key={title}
@@ -146,12 +140,12 @@ const handleExport = (classId) => {
         ))}
       </div>
 
-      {/* Rows */}
+   
       {classes.map((cls) => (
         <div key={cls.classId} className="space-y-1">
           {/* Desktop */}
-          <div className="hidden md:grid grid-cols-6 gap-4 items-center">
-            <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate">{cls.name}</div>
+           <div className={`hidden md:grid ${userRole === "Teacher" ? "grid-cols-6" : "grid-cols-5"} gap-4 items-center`}>
+            <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate" onClick={() => router.push(`/class/${cls.classId}`)}>{cls.name}</div>
             <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate">
               {new Date(cls.createdAt).toLocaleDateString()}
             </div>
@@ -160,98 +154,81 @@ const handleExport = (classId) => {
             <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate">
               {cls.schedule || "-"}
             </div>
+       
 
             <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
-              {(
-                actionMenuOpen
-                  ? [
-                      { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
-                      { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
-                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
-                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
-                    ]
-                  : [
-                     { name: "enter", custom: true },
-                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
-              
-                    ]
-              ).map((action) => (
-                <button
-                  key={action.name}
-                  onClick={() => {
-                    if (action.name === "enter") {
-                      router.push(`/class/${cls.classId}`);
-                    }
-                    else if (action.name === "export") handleExport(cls.classId);
-                    else openModal(action.name, cls.classId);
-                  }}
-                  className={action.custom ? "bg-primary text-white px-3 py-1 rounded hover:bg-primary/90" : ""}
-                >
-                  {action.custom ? "Enter Class" : (
-                    <Image
-                      src={action.icon}
-                      alt={action.alt}
-                      width={action.width}
-                      height={action.height}
-                    />
-                  )}
-                </button>
-              ))}
-              
+              {actionMenuOpen && (
+                <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
+                  {[
+                    { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
+                    { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
+                    { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
+                    { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                  ].map((action) => (
+                    <button
+                      key={action.name}
+                      onClick={() => {
+                        if (action.name === "export") handleExport(cls.classId);
+                        else openModal(action.name, cls.classId);
+                      }}
+                    >
+                      <Image
+                        src={action.icon}
+                        alt={action.alt}
+                        width={action.width}
+                        height={action.height}
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-
-
           </div>
           
 
           {/* Mobile */}
-          <div className="md:hidden bg-secondary text-white rounded-lg p-4">
+          <div className="md:hidden bg-secondary text-white rounded-lg p-4 space-y-1">
             <div><strong>Class Name:</strong> {cls.name}</div>
             <div><strong>Created:</strong> {new Date(cls.createdAt).toLocaleDateString()}</div>
             <div><strong>Students:</strong> {cls.totalStudents}</div>
             <div><strong>Code:</strong> {cls.classCode}</div>
             <div><strong>Schedule:</strong> {cls.schedule || "-"}</div>
 
-            <div className="relative mt-3 flex justify-end">
-              <button onClick={() => toggleMobileMenu(cls.classId)}>
-                <EllipsisVertical className="w-6 h-6 text-white" />
-              </button>
-              {mobileMenuOpenId === cls.classId && (
-                <div className="absolute right-0 m-5 bg-white rounded shadow-lg p-2 flex flex-col gap-3 z-10">
-                 {(
-                actionMenuOpen
-                  ? [
+            {userRole === "Teacher" && (
+              <div className="relative mt-3 flex justify-end">
+                <button onClick={() => toggleMobileMenu(cls.classId)}>
+                  <EllipsisVertical className="w-6 h-6 text-white" />
+                </button>
+
+                {mobileMenuOpenId === cls.classId && (
+                  <div className="absolute right-0 mt-2 bg-white rounded shadow-lg p-2 flex gap-3 z-10">
+                    {[
                       { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
                       { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
                       { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
                       { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
-                    ]
-                  : [
-                      { name: "enter", icon: "/Assets/Enter.svg", alt: "Enter", width: 30, height: 30 },
-                      { name: "leave", icon: "/Assets/Leave.svg", alt: "Leave", width: 27, height: 27 },
-                      { name: "share", icon: "/Assets/share.svg", alt: "Share", width: 25, height: 25 },
-                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
-                    ]
-              ).map((action) => (
-                <button
-                  key={action.name}
-                  onClick={() => {
-                    if (action.name === "export") handleExport(cls.classId);
-                    else openModal(action.name, cls.classId);
-                  }}
-                >
-                  <Image
-                    src={action.icon}
-                    alt={action.alt}
-                    width={action.width}
-                    height={action.height}
-                  />
-                </button>
-              ))}
-                </div>
-              )}
-            </div>
+                    ].map((action) => (
+                      <button
+                        key={action.name}
+                        onClick={() => {
+                          if (action.name === "export") handleExport(cls.classId);
+                          else openModal(action.name, cls.classId);
+                        }}
+                      >
+                        <Image
+                          src={action.icon}
+                          alt={action.alt}
+                          width={action.width}
+                          height={action.height}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
+
 
           {/* Modals */}
           {activeModal === "edit" && selectedClassId === cls.classId && (
