@@ -1,8 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Images from '../bg-images';
 
 const ModalFooter = () => {
   return (
-    <div>ModalFooter</div>
+    <div className='mb-8'>
+        <Images footer/>
+
+    </div>
   )
 }
 

@@ -145,7 +145,7 @@ const headerTitles = userRole === "Teacher"
         <div key={cls.classId} className="space-y-1">
           {/* Desktop */}
            <div className={`hidden md:grid ${userRole === "Teacher" ? "grid-cols-6" : "grid-cols-5"} gap-4 items-center`}>
-            <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate" onClick={() => router.push(`/class/${cls.classId}`)}>{cls.name}</div>
+            <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate hover:bg-primary cursor-pointer" onClick={() => router.push(`/class/${cls.classId}`)}>{cls.name}</div>
             <div className="bg-secondary px-3 py-2 rounded-lg text-white text-center truncate">
               {new Date(cls.createdAt).toLocaleDateString()}
             </div>

@@ -20,7 +20,12 @@ const CreateClass = ({ onClose }) => {
   });
 
   const [newOutcome, setNewOutcome] = useState("");
-  const [newSchedule, setNewSchedule] = useState({ day: "", time: "" });
+  const [newSchedule, setNewSchedule] = useState({
+  day: '',
+  startTime: '',
+  endTime: ''
+});
+
   const [classCode, setClassCode] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errors, setErrors] = useState({});
@@ -58,14 +63,26 @@ const CreateClass = ({ onClose }) => {
   };
 
   const handleAddSchedule = () => {
-    if (newSchedule.day && newSchedule.time) {
-      setFormData((prev) => ({
-        ...prev,
-        schedule: [...prev.schedule, `${newSchedule.day}: ${newSchedule.time}`],
-      }));
-      setNewSchedule({ day: "", time: "" });
-    }
-  };
+  const { day, startTime, endTime } = newSchedule;
+
+  if (!day || !startTime || !endTime) return;
+
+  const formatTime = (time) =>
+    new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).format(new Date(`1970-01-01T${time}`));
+
+  const formatted = `${day} ${formatTime(startTime)} - ${formatTime(endTime)}`;
+  setFormData((prev) => ({
+    ...prev,
+    schedule: [...prev.schedule, formatted]
+  }));
+
+  setNewSchedule({ day: '', startTime: '', endTime: '' });
+};
+
 
   const handleSubmit = async (e) => {
     console.log("Submitting form with data:", formData);
@@ -84,9 +101,7 @@ const CreateClass = ({ onClose }) => {
     console.log("Submited form data:", submitData);
 
     try {
-       console.log("📌 Before Zod parse");
-  CreateClassSchema.parse(submitData);
-  console.log("✅ After Zod parse");
+      CreateClassSchema.parse(submitData);
 
       const response = await fetch("/api/class/create", {
         method: "POST",
@@ -192,14 +207,14 @@ const CreateClass = ({ onClose }) => {
             </ul>
           </div>
 
-          {/* Schedule */}
+         {/* Schedule */}
           <div>
             <label className="font-semibold">Class Schedule</label>
-            <div className="flex gap-2 mt-1">
+            <div className="flex gap-2 mt-1 flex-wrap">
               <select
                 value={newSchedule.day}
                 onChange={(e) => setNewSchedule((prev) => ({ ...prev, day: e.target.value }))}
-                className="bg-gray-100 rounded-md p-2 w-1/2"
+                className="bg-gray-100 rounded-md p-2 w-full sm:w-1/3"
               >
                 <option value="">Select Day</option>
                 {weekdays.map((day) => (
@@ -208,22 +223,37 @@ const CreateClass = ({ onClose }) => {
                   </option>
                 ))}
               </select>
+
               <input
                 type="time"
-                value={newSchedule.time}
-                onChange={(e) => setNewSchedule((prev) => ({ ...prev, time: e.target.value }))}
-                className="bg-gray-100 rounded-md p-2 w-1/2"
+                value={newSchedule.startTime}
+                onChange={(e) => setNewSchedule((prev) => ({ ...prev, startTime: e.target.value }))}
+                className="bg-gray-100 rounded-md p-2 w-full sm:w-1/3"
               />
-              <button type="button" onClick={handleAddSchedule} className="bg-blue-500 text-white px-3 rounded">
+
+              <input
+                type="time"
+                value={newSchedule.endTime}
+                onChange={(e) => setNewSchedule((prev) => ({ ...prev, endTime: e.target.value }))}
+                className="bg-gray-100 rounded-md p-2 w-full sm:w-1/3"
+              />
+
+              <button
+                type="button"
+                onClick={handleAddSchedule}
+                className="bg-blue-500 text-white px-3 py-2 rounded mt-2 sm:mt-0"
+              >
                 Add
               </button>
             </div>
+
             <ul className="mt-2 text-sm text-gray-700">
               {formData.schedule.map((s, idx) => (
                 <li key={idx}>{s}</li>
               ))}
             </ul>
           </div>
+
 
           {/* Submit Button */}
           <div className="col-span-2 mt-4">
