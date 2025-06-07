@@ -81,13 +81,34 @@ export const getStudentClasses = async (studentId) => {
 
 // 6. Get class by classId
 export const getClassByClassId = async (classId) => {
-  return await db.class.findFirst({
+  const classData = await db.class.findFirst({
     where: { classId },
     include: {
-      teacher: { include: { user: true } },
+      teacher: {
+        include: { user: true },
+      },
     },
   });
+
+  if (!classData) return null;
+
+  const students = await db.student.findMany({
+    where: {
+      studentId: {
+        in: classData.studentIds,
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  return {
+    ...classData,
+    students,
+  };
 };
+
 
 // 7. Update class details
 export const updateClass = async (classId, data) => {

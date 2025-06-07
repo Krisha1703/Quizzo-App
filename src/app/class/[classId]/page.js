@@ -6,12 +6,26 @@ import clsx from "clsx";
 import MenuItem from "@/components/Navbar/menu-item";
 import Syllabus from "@/components/classpage/syllabus";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
+import Image from "next/image";
+import Members from "@/components/classpage/members";
+import Resources from "@/components/classpage/resources";
 
 const ClassPage = () => {
   const { classId } = useParams();
   const [classData, setClassData] = useState(null);
   const [activeTab, setActiveTab] = useState("syllabus");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
+  
+    useEffect(() => {
+      if (typeof window !== "undefined") {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          setUserRole(user.role);
+        }
+      }
+    }, []);
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -53,9 +67,31 @@ const ClassPage = () => {
       case "quizzes":
         return <div className="text-primary">📝 Quizzes content goes here</div>;
       case "members":
-        return <div className="text-primary">👥 Members list goes here</div>;
-      case "resources":
-        return <div className="text-primary">📁 Resources section</div>;
+        return (
+          <Members 
+            teacher={{
+              fullName: `${classData.teacher?.user?.firstName} ${classData.teacher?.user?.lastName}`,
+              email: classData.teacher?.user?.email,
+              role: classData.teacher?.user?.role,
+              customId: classData.teacher?.teacherId,
+            }}
+            students={classData.students?.map((student) => ({
+              fullName: `${student.user?.firstName} ${student.user?.lastName}`,
+              email: student.user?.email,
+              role: student.user?.role,
+              customId: student.studentId,
+            })) || []}
+          />
+        );
+
+     case "resources":
+      return (
+        <Resources
+          userRole={userRole}
+          existingResources={classData.resource || []}
+        />
+      );
+
       case "assignments":
         return <div className="text-primary">🧾 Assignments overview</div>;
       case "scorebook":
@@ -71,11 +107,14 @@ const ClassPage = () => {
 
   return (
     <div className="min-h-screen w-full flex flex-col relative">
-      <header className="bg-secondary text-white px-4 py-5 flex items-center justify-between relative shadow">
+      <header className="bg-secondary text-white px-4 py-3 flex items-center justify-between relative shadow">
         <button className="z-30" onClick={() => setSidebarOpen(!sidebarOpen)}>
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
+          <Image
+            src={sidebarOpen ? "/Assets/close.webp" : "/Assets/menu.svg"}
+            alt={sidebarOpen ? "Close" : "Menu"}
+            width={sidebarOpen ? 30 : 50}
+            height={sidebarOpen ? 30 : 50}
+          />
         </button>
 
         <h1 className="absolute left-1/2 transform -translate-x-1/2 text-2xl font-bold">

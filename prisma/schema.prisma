@@ -50,17 +50,29 @@ model Student {
 }
 
 model Class {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  classId          String   @unique
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  classId          String     @unique
   teacherId        String
-  teacher          Teacher  @relation(fields: [teacherId], references: [teacherId], name: "TeacherClasses")
+  teacher          Teacher    @relation(fields: [teacherId], references: [teacherId], name: "TeacherClasses")
 
   name             String
   description      String?
   learningOutcomes String?
   schedule         String?
-  classCode        String   @unique
-  createdAt        DateTime @default(now())
+  classCode        String     @unique
+  createdAt        DateTime   @default(now())
+  studentIds       String[]
 
-  studentIds       String[] 
+  resources        Resource[] @relation("ClassResources")
 }
+
+model Resource {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  classId     String
+  class       Class    @relation("ClassResources", fields: [classId], references: [classId])
+  description String
+  url         String
+  createdAt   DateTime @default(now())
+}
+
+
