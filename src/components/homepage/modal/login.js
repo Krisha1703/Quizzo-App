@@ -45,6 +45,7 @@ const Login = ({ onClose, onSwitchToSignup }) => {
          setTimeout(() => {
           const role = data.user.role.toLowerCase(); 
           localStorage.setItem("user", JSON.stringify(data.user));
+          
           if (role === "teacher") {
             router.push("/classes/teacher");
           } else {

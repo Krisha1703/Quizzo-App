@@ -47,6 +47,7 @@ model Student {
   studentId  String   @unique
   userId     String   @unique
   user       User     @relation(fields: [userId], references: [userId])
+  submissions AssignmentSubmission[]
 }
 
 model Class {
@@ -64,6 +65,7 @@ model Class {
   studentIds       String[]
 
   resources        Resource[] @relation("ClassResources")
+  assignments Assignment[]
 }
 
 model Resource {
@@ -73,6 +75,35 @@ model Resource {
   description String
   url         String
   createdAt   DateTime @default(now())
+}
+
+model Assignment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  assignmentId String  @unique
+  classId     String
+  class       Class    @relation(fields: [classId], references: [classId])
+  title       String
+  description String?
+  fileUrl     String
+  dueDate     DateTime
+  createdAt   DateTime @default(now())
+
+  submissions AssignmentSubmission[]
+}
+
+model AssignmentSubmission {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  submissionId   String   @unique
+  assignmentId   String
+  studentId      String
+  fileUrl        String
+  submittedAt    DateTime @default(now())
+  isLate         Boolean
+
+  assignment     Assignment @relation(fields: [assignmentId], references: [assignmentId])
+  student        Student    @relation(fields: [studentId], references: [studentId])
+  
+   @@unique([assignmentId, studentId])
 }
 
 

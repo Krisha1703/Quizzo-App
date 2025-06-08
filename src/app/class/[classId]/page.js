@@ -9,6 +9,7 @@ import ModalFooter from "@/components/homepage/modal/modal-footer";
 import Image from "next/image";
 import Members from "@/components/classpage/members";
 import Resources from "@/components/classpage/resources";
+import Assignments from "@/components/classpage/assignments";
 
 const ClassPage = () => {
   const { classId } = useParams();
@@ -16,6 +17,7 @@ const ClassPage = () => {
   const [activeTab, setActiveTab] = useState("syllabus");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
   
     useEffect(() => {
       if (typeof window !== "undefined") {
@@ -23,9 +25,13 @@ const ClassPage = () => {
         if (storedUser) {
           const user = JSON.parse(storedUser);
           setUserRole(user.role);
+          setUserId(user.userId);
         }
       }
     }, []);
+
+    console.log("User Role:", userRole);
+  console.log("User ID:", userId);
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -93,7 +99,13 @@ const ClassPage = () => {
       );
 
       case "assignments":
-        return <div className="text-primary">🧾 Assignments overview</div>;
+        return (
+          <Assignments
+            userRole={userRole}
+            classId={classId}
+            userId={userId}
+          />
+        );
       case "scorebook":
         return <div className="text-primary">📊 Scorebook display</div>;
       default:

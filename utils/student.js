@@ -27,6 +27,7 @@ export const getStudentByUserId = async (userId) => {
   });
 };
 
+
 // 4. Get student by studentId
 export const getStudentByStudentId = async (studentId) => {
   return await db.student.findUnique({
