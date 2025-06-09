@@ -188,7 +188,7 @@ const headerTitles = userRole === "Teacher"
 
           {/* Mobile */}
           <div className="md:hidden bg-secondary text-white rounded-lg p-4 space-y-1">
-            <div><strong>Class Name:</strong> {cls.name}</div>
+            <div onClick={() => router.push(`/class/${cls.classId}`)}><strong>Class Name:</strong> {cls.name}</div>
             <div><strong>Created:</strong> {new Date(cls.createdAt).toLocaleDateString()}</div>
             <div><strong>Students:</strong> {cls.totalStudents}</div>
             <div><strong>Code:</strong> {cls.classCode}</div>

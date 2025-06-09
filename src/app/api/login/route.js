@@ -2,6 +2,7 @@
 
 import { LoginSchema } from "../../../../schema";
 import { loginUser } from "../../../../utils/user";
+import { db } from "../../../../lib/db";
 
 export async function POST(req) {
   try {
@@ -31,6 +32,11 @@ export async function POST(req) {
         { status: 401 }
       );
     }
+
+     await db.user.update({
+      where: { email },
+      data: { LastLoginAt: new Date() },
+    });
 
     return new Response(
       JSON.stringify({
