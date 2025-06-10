@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { EllipsisVertical } from "lucide-react";
+import Image from "next/image";
 
 const Assignments = ({ userRole, classId, userId }) => {
   const [assignments, setAssignments] = useState([]);
@@ -8,10 +10,12 @@ const Assignments = ({ userRole, classId, userId }) => {
   const [file, setFile] = useState(null);
   const [dueDate, setDueDate] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [mobileMenuOpenId, setMobileMenuOpenId] = useState(null);
   const [submittingAssignmentId, setSubmittingAssignmentId] = useState(null);
   const [studentFile, setStudentFile] = useState(null);
   const [title, setTitle] = useState("");
   const [submitted, setSubmitted] = useState(false);
+   const [actionMenuOpen, setActionMenuOpen] = useState(false);
 
  useEffect(() => {
   const fetchAssignments = async () => {
@@ -31,6 +35,7 @@ const Assignments = ({ userRole, classId, userId }) => {
       })
     );
     setAssignments(assignmentsWithStats);
+    setActionMenuOpen(true);
   } else {
 
     setAssignments(data);
@@ -127,6 +132,14 @@ const Assignments = ({ userRole, classId, userId }) => {
     setSubmittingAssignmentId(null);
   };
 
+    const toggleMobileMenu = (assignmentId) => {
+    setMobileMenuOpenId((prev) => (prev === assignmentId ? null : assignmentId));
+  };
+
+    const headerTitles = userRole === "Teacher"
+  ? ["Assignment", "Created At", "Due At", "Submissions", "Actions" ]
+  : ["Assignment", "Description", "Created At", "Due At", "Submissions" ];
+
   return (
     <div className="space-y-8">
       {userRole === "Teacher" && (
@@ -169,89 +182,195 @@ const Assignments = ({ userRole, classId, userId }) => {
           <p className="text-gray-500">No assignments yet.</p>
         ) : (
           <div className="space-y-4">
-            {assignments.map((assignment) => (
-              <div
-                key={assignment.assignmentId}
-                className="p-4 border rounded shadow-sm space-y-2"
-              >
-                <p className="font-semibold">{assignment.description}</p>
-                <p className="text-sm">Due: {new Date(assignment.dueDate).toLocaleDateString()}</p>
-                <a
-                  href={assignment.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  Download Assignment
-                </a>
+            {/* Table Header */}
+        <div className="hidden md:grid grid-cols-5 gap-4 my-2">
+          {headerTitles.map((title) => (
+            <div
+              key={title}
+              className="bg-primary text-white font-semibold text-center py-2 px-3 rounded-lg shadow-sm"
+            >
+              {title}
+            </div>
+          ))}
+        </div>
 
-                {/* Only for teachers: show submission stats */}
-    {userRole === "Teacher" && assignment.submissionStats && (
-      <div className="flex gap-2 mt-2">
-        <button className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-          ✅ On Time: {assignment?.submissionStats?.onTime}
-        </button>
-        <button className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
-          🕒 Late: {assignment?.submissionStats?.late}
-        </button>
-        <button className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-medium">
-          ❌ Not Submitted: {assignment?.submissionStats?.notSubmitted}
-        </button>
-      </div>
-    )}
-
-                {userRole === "Student" && (
-  <div className="mt-2 space-y-2">
-    <p className="text-sm text-gray-600">
-      Status:{" "}
-      <span
-        className={`font-semibold ${
-          assignment.submissionStatus === "Not Submitted"
-            ? "text-red-500"
-            : assignment.submissionStatus === "Late"
-            ? "text-yellow-500"
-            : "text-green-600"
-        }`}
-      >
-        {assignment.submissionStatus}
-      </span>
-    </p>
-
-    {assignment.submissionStatus === "Not Submitted" ? (
-      <>
-        <input
-          type="file"
-          onChange={(e) => setStudentFile(e.target.files[0])}
-        />
-        <button
-          onClick={() =>
-            handleStudentSubmit(assignment.assignmentId, userId)
-          }
-          className="bg-secondary text-white px-3 py-1 rounded"
-          disabled={submittingAssignmentId === assignment.assignmentId}
-        >
-          {submittingAssignmentId === assignment.assignmentId
-            ? "Submitting..."
-            : "Submit Assignment"}
-        </button>
-      </>
-    ) : (
-      <button
-        className="bg-primary text-white px-3 py-1 rounded cursor-default"
-        disabled
-      >
-        Submitted
-      </button>
-    )}
-  </div>
-)}
-
+        {/* Table Rows */}
+        {assignments.map((assignment) => (
+          <div
+            key={assignment.assignmentId}
+            className="hidden md:grid grid-cols-5 gap-4 items-center"
+          >
+            <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
+              {assignment.title}
+            </div>
+            {!actionMenuOpen && (
+              <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
+              {assignment.description}
               </div>
-            
-            ))}
+             )}
+             
+            <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
+              {new Date(assignment.createdAt).toLocaleString()}
+            </div>
+            <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
+              {new Date(assignment.dueDate).toLocaleString()}
+            </div>
+
+            <div className=" text-white px-3 py-2 rounded-lg text-center w-full">
+              {/* Only for teachers: show submission stats */}
+              {userRole === "Teacher" && assignment.submissionStats && (
+                <div className="flex gap-2 ">
+                  <button className="bg-green-500 px-3 py-2 rounded-md w-1/3 text-md font-medium">
+                    {assignment?.submissionStats?.onTime}
+                  </button>
+                  <button className="bg-yellow-500  rounded-md w-1/3 text-md font-medium">
+                    {assignment?.submissionStats?.late}
+                  </button>
+                  <button className="bg-red-500  rounded-md w-1/3 text-md font-medium">
+                    {assignment?.submissionStats?.notSubmitted}
+                  </button>
+                </div>
+              )}
+
+            </div>
+
+            <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
+                {actionMenuOpen && (
+                  <div className="bg-white px-3 py-2 rounded-lg flex justify-center items-center gap-2">
+                    {[
+                      { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 35, height: 35 },
+                      { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 30, height: 30 },
+                      { name: "grade", icon: "/Assets/grade.svg", alt: "Grade", width: 30, height: 30 },
+                      { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 25, height: 25 },
+                    ].map((action) => (
+                      <button
+                        key={action.name}
+                        onClick={() => {
+                          if (action.name === "export") handleExport(cls.classId);
+                          else openModal(action.name, cls.classId);
+                        }}
+                      >
+                        <Image
+                          src={action.icon}
+                          alt={action.alt}
+                          width={action.width}
+                          height={action.height}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
           </div>
+        ))}
+
+        {/* Mobile View */}
+        <div className="md:hidden space-y-4">
+          {assignments.map((assignment) => (
+            <div
+              key={assignment.assignmentId}
+              className="bg-secondary text-white rounded-lg p-4 space-y-1 relative"
+            >
+              <div onClick={() => router.push(`/assignment/${assignment.assignmentId}`)}>
+                <strong>Title:</strong> {assignment.title}
+              </div>
+          
+              <div>
+                <strong>Description:</strong> {assignment.description}
+              </div>
+              
+              <div>
+                <strong>Created:</strong> {new Date(assignment.createdAt).toLocaleString()}
+              </div>
+              <div>
+                <strong>Due Date:</strong> {new Date(assignment.dueDate).toLocaleString()}
+              </div>
+
+              {userRole === "Teacher" && assignment.submissionStats && (
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="bg-green-600 p-2 mt-2 rounded-md text-center text-sm font-medium flex flex-col items-center">
+                    <span>{assignment?.submissionStats?.onTime}</span>
+                  </div>
+                  <div className="bg-yellow-600 p-2 mt-2 rounded-md text-center text-sm font-medium flex flex-col items-center">
+                    <span>{assignment?.submissionStats?.late}</span>
+                  </div>
+                  <div className="bg-red-600 p-2 mt-2 rounded-md text-center text-sm font-medium flex flex-col items-center">
+                    <span>{assignment?.submissionStats?.notSubmitted}</span>
+                  </div>
+                </div>
+              )}
+
+              {userRole === "Teacher" && ( 
+                <div className="relative mt-3 flex justify-end">
+                  <button onClick={() => toggleMobileMenu(assignment.assignmentId)}>
+                    <EllipsisVertical className="w-6 h-6 text-white" />
+                  </button>
+
+                  {mobileMenuOpenId === assignment.assignmentId && (
+                    <div className="absolute right-0 mt-2 bg-white rounded shadow-lg p-2 flex gap-3 z-10">
+                      {[
+                        { name: "edit", icon: "/Assets/edit.svg", alt: "Edit", width: 30, height: 30 },
+                        { name: "delete", icon: "/Assets/delete.svg", alt: "Delete", width: 27, height: 27 },
+                        { name: "grade", icon: "/Assets/grade.svg", alt: "Grade", width: 30, height: 30 },
+                        { name: "export", icon: "/Assets/download.svg", alt: "Export", width: 23, height: 23 },
+                      ].map((action) => (
+                        <button
+                          key={action.name}
+                          onClick={() => {
+                            if (action.name === "export") handleExport(assignment.assignmentId);
+                            else openModal(action.name, assignment.assignmentId);
+                          }}
+                        >
+                          <Image
+                            src={action.icon}
+                            alt={action.alt}
+                            width={action.width}
+                            height={action.height}
+                          />
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              
+              {userRole === "Student" && (
+                <div className="mt-2 space-y-2">
+                  {assignment.submissionStatus === "Not Submitted" ? (
+                    <>
+                      <input
+                        type="file"
+                        onChange={(e) => setStudentFile(e.target.files[0])}
+                      />
+                      <button
+                        onClick={() =>
+                          handleStudentSubmit(assignment.assignmentId, userId)
+                        }
+                        className="bg-secondary text-white px-3 py-1 rounded"
+                        disabled={submittingAssignmentId === assignment.assignmentId}
+                      >
+                        {submittingAssignmentId === assignment.assignmentId
+                          ? "Submitting..."
+                          : "Submit Assignment"}
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      className="bg-primary text-white px-3 py-1 rounded cursor-default"
+                      disabled
+                    >
+                      Submitted
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+          </div>
+        </div>
         )}
-      </div>
+        </div>        
     </div>
   );
 };
