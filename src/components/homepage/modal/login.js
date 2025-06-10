@@ -74,9 +74,9 @@ const Login = ({ onClose, onSwitchToSignup }) => {
   return (
     <div className="w-5/6 mx-auto bg-white z-50">
       <ModalHeader onClose={onClose} />
-      <div className="md:overflow-y-hidden overflow-y-auto md:max-h-screen max-h-[60vh]">
+      <div className="md:overflow-y-hidden overflow-y-auto md:max-h-screen max-h-[80vh]">
         <form className="flex flex-col gap-6 mt-20 mb-10" onSubmit={handleSubmit}>
-          <div className="flex flex-col">
+          <div className="flex flex-col md:mt-0 mt-10">
             <label className="text-black font-semibold">
               Email <span className="text-red-500">*</span>
             </label>
@@ -119,6 +119,9 @@ const Login = ({ onClose, onSwitchToSignup }) => {
         <Button text="Login" type="submit" onClick={handleSubmit} />
         <MenuItem title="Sign Up" onClick={onSwitchToSignup} />
       </div>
+
+      <div className="md:hidden flex flex-col"></div>
+
       <ModalFooter />
     </div>
   );

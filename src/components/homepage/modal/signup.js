@@ -79,11 +79,11 @@ const Signup = ({ onClose, onSwitchToLogin }) => {
   return (
     <div className="w-5/6 mx-auto bg-white z-50">
       <ModalHeader onClose={onClose} />
-      <div className="md:overflow-y-hidden overflow-y-auto md:max-h-screen max-h-[60vh]">
-        <form className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-20 mb-10" onSubmit={handleSubmit}>
+      <div className="md:overflow-y-hidden overflow-y-auto  md:max-h-screen max-h-[60vh] hide-scrollbar">
+        <form className="md:grid flex flex-col md:grid-cols-2 gap-6 mt-20 mb-10" onSubmit={handleSubmit}>
           {/* First Row: First Name and Last Name */}
           {[{ label: "First Name", name: "firstName" }, { label: "Last Name", name: "lastName" }].map(({ label, name }) => (
-            <div key={name} className="flex flex-col">
+            <div key={name} className="flex flex-col md:mt-0 mt-10">
               <label className="text-black font-semibold">
                 {label} <span className="text-red-500">*</span>
               </label>
@@ -164,6 +164,15 @@ const Signup = ({ onClose, onSwitchToLogin }) => {
             </span>
           </motion.label>
           {errors.termsAccepted && <div className="text-red-500 col-span-2">{errors.termsAccepted}</div>}
+
+          <div className="flex items-center gap-4 mb-20 -mt-10">
+            <Button text="Sign Up" type="submit" onClick={handleSubmit} />
+            <MenuItem
+              title="Login"
+              onClick={onSwitchToLogin}
+            />
+          </div>
+
         </form>
       </div>
 
@@ -173,14 +182,7 @@ const Signup = ({ onClose, onSwitchToLogin }) => {
           {successMessage}
         </div>
       )}
-
-      <div className="flex items-center gap-4 mb-20 -mt-10">
-        <Button text="Sign Up" type="submit" onClick={handleSubmit} />
-        <MenuItem
-          title="Login"
-          onClick={onSwitchToLogin}
-        />
-      </div>
+    
       <ModalFooter />
     </div>
   );
