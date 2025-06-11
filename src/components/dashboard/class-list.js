@@ -233,7 +233,7 @@ const headerTitles = userRole === "Teacher"
           {/* Modals */}
           {activeModal === "edit" && selectedClassId === cls.classId && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm">
-              <div className="relative bg-white rounded-lg shadow-xl p-6 max-w-3xl w-full">
+              <div className="relative bg-white rounded-lg shadow-xl p-6 md:max-w-5xl max-w-4xl w-5/6 md:h-screen h-5/6 md:w-full">
                 <EditClass onClose={closeModal} classId={cls.classId} />
               </div>
             </div>
@@ -241,9 +241,9 @@ const headerTitles = userRole === "Teacher"
 
           {activeModal === "delete" && selectedClassId === cls.classId && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2  min-h-[44vh] max-h-[45vh] max-w-md w-full bg-white rounded shadow-lg">
+          <div className="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2  md:min-h-[44vh] md:max-h-[45vh] min-h-[40vh] max-h-[44vh] max-w-xl w-5/6 md:max-w-md md:w-full bg-white rounded shadow-lg">
             <div className="p-6 mt-10">
-              <div className="space-y-4 text-center">
+              <div className="space-y-4 text-center md:mt-0 mt-10">
                 <ModalHeader onClose={closeModal} />
                 <p className="text-lg font-semibold">Are you sure you want to delete this class?</p>
 
@@ -259,9 +259,9 @@ const headerTitles = userRole === "Teacher"
 
           {activeModal === "share" && selectedClassId === cls.classId && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2  min-h-[49vh] max-h-[50vh] max-w-md w-full bg-white rounded shadow-lg">
+          <div className="absolute top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2  md:min-h-[49vh] md:max-h-[50vh] min-h-[40vh] max-h-[42vh] max-w-md md:w-full w-5/6 bg-white rounded shadow-lg">
             <div className="p-6 mt-10">
-              <div className="space-y-4 text-center">
+              <div className="space-y-4 text-center md:mt-0 mt-10">
                 <ModalHeader onClose={closeModal} />
                 <p className="text-lg font-semibold">Share the class code with others</p>
 
@@ -273,7 +273,7 @@ const headerTitles = userRole === "Teacher"
                   />
                   <button
                     onClick={handleCopyCode}
-                    className="bg-blue-600 text-white px-4 py-2 rounded-l-none rounded whitespace-nowrap"
+                    className="bg-primary text-white px-4 py-2 rounded-l-none rounded whitespace-nowrap"
                   >
                     {copied ? "Copied!" : "Copy"}
                   </button>

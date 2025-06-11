@@ -141,7 +141,7 @@ const Resources = ({ userRole, existingResources = [] }) => {
           {filteredResources.map((res) => (
             <div
               key={res.id}
-              className="bg-white rounded-lg shadow p-4 space-y-1 border border-gray-200"
+              className="bg-secondary rounded-lg shadow p-4 space-y-1 text-white"
             >
               <p><span className="font-semibold">Description:</span> {res.description}</p>
               <p><span className="font-semibold">Uploaded:</span> {new Date(res.createdAt).toLocaleString()}</p>
@@ -149,7 +149,7 @@ const Resources = ({ userRole, existingResources = [] }) => {
                 href={res.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline font-semibold"
+                className="text-white underline font-semibold"
                 download
               >
                 Download

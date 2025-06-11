@@ -71,7 +71,7 @@ const Members = ({ teacher, students }) => {
       {/* Mobile View */}
       <div className="md:hidden space-y-4">
         {filteredMembers.map((member, index) => (
-          <div key={index} className="bg-white rounded-lg shadow p-4 space-y-1 border border-gray-200">
+          <div key={index} className="bg-secondary rounded-lg shadow p-4 space-y-1 border text-white">
             <p><span className="font-semibold">Name:</span> {member.fullName}</p>
             <p><span className="font-semibold">Role:</span> {member.role}</p>
             <p><span className="font-semibold">Email:</span> {member.email}</p>

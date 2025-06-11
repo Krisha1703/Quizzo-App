@@ -20,7 +20,7 @@ const SignupSection = () => {
         <Review />
 
         <div className="flex justify-start space-x-4">
-          <Button text={"Join as Teacher"} />
+          <Button text={"Join as Teacher"} onClick={() => setActiveModal("signup")}/>
           <Button text={"Join as Student"} onClick={() => setActiveModal("signup")} />
         </div>
       </div>

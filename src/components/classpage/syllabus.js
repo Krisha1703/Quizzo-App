@@ -3,7 +3,7 @@ import { motion } from "framer-motion"
 
 const Syllabus = ({ description, learningOutcomes, schedules }) => {
   return (
-    <div className="p-6 w-5/6 mx-auto"> 
+    <div className="p-6 md:w-5/6 w-full mx-auto md:mb-0 mb-10"> 
       <h2 className="text-xl font-semibold mb-4">Course Description</h2>
       <p className="mb-6">{description}</p>
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ModalHeader from "@/components/homepage/modal/modal-header";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
+import Image from "next/image";
 import Button from "@/components/Navbar/button";
 import { CreateClassSchema } from "../../../schema";
 import { z } from "zod";
@@ -118,159 +119,182 @@ const EditClass = ({ classId, onClose }) => {
   const allFieldsFilled = formData.name && formData.description && formData.teacherName;
 
   return (
-    <div className="w-full max-w-5xl mx-auto bg-white z-50 px-4 sm:px-6 lg:px-8">
+    <div className="w-full  mx-auto bg-white z-50 p-4">
       <ModalHeader onClose={onClose} />
-      <div className="overflow-y-auto min-h-[70vh] max-h-[90vh] py-4 hide-scrollbar">
-        <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-20">
-          {/* Class Name */}
-          <div>
-            <label className="block text-sm font-medium">Class Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-            />
-            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
-          </div>
+      <div className="overflow-y-auto md:min-h-[80vh] md:max-h-[90vh] h-[60vh] py-4 hide-scrollbar">
+        <form onSubmit={handleSave} className="grid grid-cols-1 gap-4 mt-10">
+  {/* Class Name + Teacher + Description in flex */}
+  <div className="md:flex md:gap-4">
+    {/* Class Name + Teacher */}
+    <div className="flex flex-col flex-1 gap-4">
+      {/* Class Name */}
+      <div>
+        <label className="block text-sm font-bold">Class Name <span className="text-red-500">*</span></label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleInputChange}
+          className="w-full mt-1 p-2 border border-gray-300 rounded"
+        />
+        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+      </div>
 
-          {/* Teacher Name */}
-          <div>
-            <label className="block text-sm font-medium">Teacher</label>
-            <input
-              type="text"
-              name="teacherName"
-              value={formData.teacherName}
-              readOnly
-              className="w-full mt-1 p-2 border border-gray-200 bg-gray-100 rounded cursor-not-allowed"
-            />
-          </div>
+      {/* Teacher Name */}
+      <div>
+        <label className="block text-sm font-bold">Teacher <span className="text-red-500">*</span></label>
+        <input
+          type="text"
+          name="teacherName"
+          value={formData.teacherName}
+          readOnly
+          className="w-full mt-1 p-2 border border-gray-200 bg-gray-100 rounded cursor-not-allowed"
+        />
+      </div>
+    </div>
 
-          {/* Description */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Description</label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              rows={3}
-              className="w-full mt-1 p-2 border border-gray-300 rounded"
-            />
-            {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-          </div>
+    {/* Description */}
+    <div className="flex-1 mt-4 md:mt-0">
+      <label className="block text-sm font-bold">Description <span className="text-red-500">*</span></label>
+      <textarea
+        name="description"
+        value={formData.description}
+        onChange={handleInputChange}
+        rows={4}
+        className="w-full mt-1 p-2 border border-gray-300 rounded"
+      />
+      {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
+    </div>
+  </div>
 
-          {/* Learning Outcomes */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Learning Outcomes</label>
-            <div className="flex flex-col sm:flex-row gap-2 mb-2">
-              <input
-                type="text"
-                value={newOutcome}
-                onChange={(e) => setNewOutcome(e.target.value)}
-                className="flex-grow p-2 border border-gray-300 rounded"
-                placeholder="Add outcome"
-              />
-              <button type="button" onClick={handleAddOutcome} className="bg-blue-500 text-white px-4 py-2 rounded">
-                Add
-              </button>
-            </div>
-            <ul className="list-disc ml-5 space-y-2">
-              {formData.learningOutcomes.map((item, idx) => (
-                <li key={idx} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={(e) => {
-                      const updated = [...formData.learningOutcomes];
-                      updated[idx] = e.target.value;
-                      setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
-                    }}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const updated = formData.learningOutcomes.filter((_, i) => i !== idx);
-                      setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
-                    }}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+  {/* Learning Outcomes */}
+  <div className="md:col-span-2">
+    <label className="block text-sm font-bold">Learning Outcomes <span className="text-red-500">*</span></label>
+    <div className="flex flex-row gap-2 my-2">
+      <input
+        type="text"
+        value={newOutcome}
+        onChange={(e) => setNewOutcome(e.target.value)}
+        className="w-5/6 md:w-full p-2 border border-gray-300 rounded"
+        placeholder="Add outcome"
+      />
+      <button
+        type="button"
+        onClick={handleAddOutcome}
+        className="bg-primary text-white px-4 py-2 rounded"
+      >
+        Add
+      </button>
+    </div>
+    <ul className="list-disc ml-5 space-y-2">
+      {formData.learningOutcomes.map((item, idx) => (
+        <li key={idx} className="flex flex-row items-center gap-2">
+          <input
+            type="text"
+            value={item}
+            onChange={(e) => {
+              const updated = [...formData.learningOutcomes];
+              updated[idx] = e.target.value;
+              setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
+            }}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
 
-          {/* Schedule */}
-          <div className="md:col-span-2">
-            <label className="block text-sm font-medium">Schedule</label>
-            <div className="flex flex-col sm:flex-row gap-2 mb-2">
-              <select
-                value={newSchedule.day}
-                onChange={(e) => setNewSchedule((prev) => ({ ...prev, day: e.target.value }))}
-                className="border p-2 rounded"
-              >
-                <option value="">Day</option>
-                {weekdays.map((day) => (
-                  <option key={day} value={day}>
-                    {day}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                placeholder="Time (e.g. 10:00 AM)"
-                value={newSchedule.time}
-                onChange={(e) => setNewSchedule((prev) => ({ ...prev, time: e.target.value }))}
-                className="flex-grow p-2 border border-gray-300 rounded"
-              />
-              <button type="button" onClick={handleAddSchedule} className="bg-blue-500 text-white px-4 py-2 rounded">
-                Add
-              </button>
-            </div>
-            <ul className="list-disc ml-5 space-y-2">
-              {formData.schedule.map((item, idx) => (
-                <li key={idx} className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
-                  <input
-                    type="text"
-                    value={item}
-                    onChange={(e) => {
-                      const updated = [...formData.schedule];
-                      updated[idx] = e.target.value;
-                      setFormData((prev) => ({ ...prev, schedule: updated }));
-                    }}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const updated = formData.schedule.filter((_, i) => i !== idx);
-                      setFormData((prev) => ({ ...prev, schedule: updated }));
-                    }}
-                    className="text-red-500 hover:underline"
-                  >
-                    Delete
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const updated = formData.learningOutcomes.filter((_, i) => i !== idx);
+              setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
+            }}
+            className="bg-red-500 text-white px-3 py-1 rounded hidden md:block"
+          >
+            Delete
+          </button>
 
-          {/* Save Button and Feedback */}
-          <div className="md:col-span-2 mt-4">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: allFieldsFilled ? 1 : 0, y: allFieldsFilled ? 0 : 10 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <Button text="Save Changes" type="submit" />
-            </motion.div>
-            {errors.general && <p className="text-red-500 mt-2">{errors.general}</p>}
-            {successMessage && <p className="text-green-600 font-semibold mb-20">{successMessage}</p>}
-          </div>
-        </form>
+          <Image src={"/Assets/delete.svg"} width={25} height={25} alt="delete" className="md:hidden"/>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Schedule */}
+  <div className="md:col-span-2">
+    <label className="block text-sm font-bold">Schedule <span className="text-red-500">*</span></label>
+    <div className="flex flex-col sm:flex-row gap-2 mb-2 ">
+      <select
+        value={newSchedule.day}
+        onChange={(e) => setNewSchedule((prev) => ({ ...prev, day: e.target.value }))}
+        className="border p-2 rounded md:w-2/3"
+      >
+        <option value="">Day</option>
+        {weekdays.map((day) => (
+          <option key={day} value={day}>
+            {day}
+          </option>
+        ))}
+      </select>
+      
+      <div className="flex flex-row gap-2 md:w-full">
+        <input
+          type="text"
+          placeholder="Time (e.g. 10:00 AM)"
+          value={newSchedule.time}
+          onChange={(e) => setNewSchedule((prev) => ({ ...prev, time: e.target.value }))}
+          className="p-2 w-5/6 md:w-full border border-gray-300 rounded"
+        />
+        <button
+          type="button"
+          onClick={handleAddSchedule}
+          className="bg-primary text-white px-4 py-2 rounded"
+        >
+          Add
+        </button>
+      </div>
+    </div>
+    <ul className="list-disc ml-5 space-y-2">
+      {formData.schedule.map((item, idx) => (
+        <li key={idx} className="flex flex-row items-start sm:items-center gap-2">
+          <input
+            type="text"
+            value={item}
+            onChange={(e) => {
+              const updated = [...formData.schedule];
+              updated[idx] = e.target.value;
+              setFormData((prev) => ({ ...prev, schedule: updated }));
+            }}
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              const updated = formData.learningOutcomes.filter((_, i) => i !== idx);
+              setFormData((prev) => ({ ...prev, learningOutcomes: updated }));
+            }}
+            className="bg-red-500 text-white px-3 py-1 rounded hidden md:block"
+          >
+            Delete
+          </button>
+
+          <Image src={"/Assets/delete.svg"} width={25} height={25} alt="delete" className="md:hidden"/>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  {/* Save Button and Feedback */}
+  <div className="flex mt-4">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: allFieldsFilled ? 1 : 0, y: allFieldsFilled ? 0 : 10 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      <Button text="Save Changes" type="submit" />
+    </motion.div>
+    {errors.general && <p className="text-red-500 mt-2">{errors.general}</p>}
+    {successMessage && <p className="text-green-600 font-semibold my-3 mx-5">{successMessage}</p>}
+  </div>
+</form>
+
       </div>
       <ModalFooter />
     </div>
