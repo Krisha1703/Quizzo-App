@@ -1,10 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import AssignmentGradingPage from "@/app/class/[classId]/assignments/[assignmentId]/page";
 
-const Assignments = ({ userRole, classId, userId }) => {
+const Assignments = ({ userRole, classId, userId}) => {
+  const router = useRouter();
   const [assignments, setAssignments] = useState([]);
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -16,6 +19,8 @@ const Assignments = ({ userRole, classId, userId }) => {
   const [title, setTitle] = useState("");
   const [submitted, setSubmitted] = useState(false);
    const [actionMenuOpen, setActionMenuOpen] = useState(false);
+   const [searchQuery, setSearchQuery] = useState("");
+   const [gradingAssignment, setGradingAssignment] = useState(null);
 
  useEffect(() => {
   const fetchAssignments = async () => {
@@ -140,8 +145,15 @@ const Assignments = ({ userRole, classId, userId }) => {
   ? ["Assignment", "Created At", "Due At", "Submissions", "Actions" ]
   : ["Assignment", "Description", "Created At", "Due At", "Submissions" ];
 
+   const filteredAssignments = useMemo(() => {
+      const q = searchQuery.toLowerCase();
+      return assignments.filter((assignment) =>
+        assignment.title.toLowerCase().includes(q)
+      );
+    }, [searchQuery, assignments]);
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 p-2 md:w-5/6 w-full mx-auto">
       {userRole === "Teacher" && (
         <div className="space-y-4">
           <h2 className="text-xl font-bold">Create Assignment</h2>
@@ -160,24 +172,35 @@ const Assignments = ({ userRole, classId, userId }) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+          <div className="flex w-full gap-2">
           <input
             type="date"
-            className="border p-2 w-full rounded"
+            className="border p-2 w-1/4 rounded"
             value={dueDate}
             onChange={(e) => setDueDate(e.target.value)}
           />
           <button
-            className="bg-primary text-white px-4 py-2 rounded"
+            className="bg-primary text-white p-2 rounded"
             disabled={uploading}
             onClick={handleTeacherUpload}
           >
             {uploading ? "Uploading..." : "Create Assignment"}
           </button>
+          </div>
         </div>
       )}
 
       <div>
-        <h2 className="text-lg font-semibold">Assignments</h2>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <h2 className="text-lg font-semibold">Assignments</h2>
+          <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 w-full md:w-80 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary bg-primary text-white placeholder-white"
+            />
+        </div>
         {assignments.length === 0 ? (
           <p className="text-gray-500">No assignments yet.</p>
         ) : (
@@ -195,7 +218,7 @@ const Assignments = ({ userRole, classId, userId }) => {
         </div>
 
         {/* Table Rows */}
-        {assignments.map((assignment) => (
+        {filteredAssignments.map((assignment) => (
           <div
             key={assignment.assignmentId}
             className="hidden md:grid grid-cols-5 gap-4 items-center"
@@ -247,6 +270,7 @@ const Assignments = ({ userRole, classId, userId }) => {
                         key={action.name}
                         onClick={() => {
                           if (action.name === "export") handleExport(cls.classId);
+                          else if (action.name === "grade") setGradingAssignment(true);
                           else openModal(action.name, cls.classId);
                         }}
                       >
@@ -261,6 +285,20 @@ const Assignments = ({ userRole, classId, userId }) => {
                   </div>
                 )}
               </div>
+
+               {/* Grading Modal */}
+              {gradingAssignment && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white w-full mx-5 max-h-[90vh] overflow-y-auto rounded-lg shadow-xl relative p-6">
+                
+                    <AssignmentGradingPage
+                      classId={classId}
+                      assignmentId={assignment.assignmentId}
+                      onClose={() => setGradingAssignment(false)}
+                    />
+                  </div>
+                </div>
+              )}
           </div>
         ))}
 
@@ -318,6 +356,7 @@ const Assignments = ({ userRole, classId, userId }) => {
                           key={action.name}
                           onClick={() => {
                             if (action.name === "export") handleExport(assignment.assignmentId);
+                            else if (action.name === "grade") setGradingAssignment(true);
                             else openModal(action.name, assignment.assignmentId);
                           }}
                         >
@@ -331,6 +370,21 @@ const Assignments = ({ userRole, classId, userId }) => {
                       ))}
                     </div>
                   )}
+                </div>
+                
+              )}
+
+               {/* Grading Modal */}
+              {gradingAssignment && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                  <div className="bg-white w-full mx-5 max-h-[90vh] overflow-y-auto rounded-lg shadow-xl relative p-6 ">
+                
+                    <AssignmentGradingPage
+                      classId={classId}
+                      assignmentId={assignment.assignmentId}
+                      onClose={() => setGradingAssignment(false)}
+                    />
+                  </div>
                 </div>
               )}
 
@@ -365,12 +419,15 @@ const Assignments = ({ userRole, classId, userId }) => {
                   )}
                 </div>
               )}
+              
             </div>
           ))}
           </div>
         </div>
         )}
-        </div>        
+        </div>  
+        
+              
     </div>
   );
 };

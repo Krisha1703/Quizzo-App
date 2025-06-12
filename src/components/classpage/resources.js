@@ -65,7 +65,7 @@ const Resources = ({ userRole, existingResources = [] }) => {
   }, [searchQuery, resources]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-2 md:w-5/6 w-full mx-auto">
       {userRole === "Teacher" && (
         <div className="space-y-4">
           <h2 className="text-xl font-bold text-primary">📤 Upload New Resource</h2>
