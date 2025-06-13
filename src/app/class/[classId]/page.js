@@ -1,3 +1,5 @@
+// Main Class Page
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -29,9 +31,6 @@ const ClassPage = () => {
         }
       }
     }, []);
-
-    console.log("User Role:", userRole);
-  console.log("User ID:", userId);
 
   useEffect(() => {
     const fetchClassData = async () => {

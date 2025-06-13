@@ -1,4 +1,5 @@
-import React from 'react'
+//Student Class Dashboard
+
 import Navbar from '@/components/dashboard/navbar';
 import ClassList from '@/components/dashboard/class-list';
 import SidePopup from '@/components/dashboard/side-popup';

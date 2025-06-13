@@ -1,8 +1,8 @@
 //Table Header Component
 
-const TableHeader = ({headerTitles = []}) => {
+const TableHeader = ({headerTitles = [], columns}) => {
   return (
-    <div className="hidden md:grid grid-cols-6 gap-3 my-2">
+    <div className={`hidden md:grid grid-cols-${columns} gap-3 my-2`}>
         {headerTitles.map((title) => (
         <div
             key={title}

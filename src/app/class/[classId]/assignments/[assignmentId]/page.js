@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import ModalHeader from "@/components/homepage/modal/modal-header";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
 import TableHeader from "@/components/class/table-header";
-import TableRows from "@/components/class/table-rows";
+import TableRows from "@/components/class/submission-table-rows";
+import {updateStats, handleEditToggle} from "@/components/classpage/assignments/grading-helpers"
+import ScoreSummary from "@/components/classpage/assignments/score-summary";
 
 export default function AssignmentGradingPage({ classId, assignmentId, onClose }) {
 
@@ -32,23 +34,7 @@ export default function AssignmentGradingPage({ classId, assignmentId, onClose }
     fetchData();
   }, [assignmentId]);
 
-  const updateStats = (updatedSubs) => {
-    const scores = updatedSubs
-      .filter((s) => typeof s.score === "number" && !isNaN(s.score))
-      .map((s) => s.score);
-
-    const min = scores.length > 0 ? Math.min(...scores) : 0;
-    const max = scores.length > 0 ? Math.max(...scores) : 0;
-    const mean = scores.length > 0 ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
-
-    setStats({ min, mean, max });
-  };
-
-  const handleEditToggle = (studentId, currentScore) => {
-    setEditing((prev) => ({ ...prev, [studentId]: true }));
-    setEditedScores((prev) => ({ ...prev, [studentId]: currentScore ?? "" }));
-  };
-
+  
   const handleSaveScore = async (studentId) => {
     const newScore = Number(editedScores[studentId]);
     setSaving(true);
@@ -64,7 +50,7 @@ export default function AssignmentGradingPage({ classId, assignmentId, onClose }
         s.studentId === studentId ? { ...s, score: newScore } : s
       );
       setSubmissions(updatedSubs);
-      updateStats(updatedSubs);
+      updateStats(updatedSubs, setStats);
       setEditing((prev) => ({ ...prev, [studentId]: false }));
     }
 
@@ -81,7 +67,7 @@ export default function AssignmentGradingPage({ classId, assignmentId, onClose }
       <h2 className="md:text-2xl text-lg font-semibold mb-6 mt-20 text-primary">Assignment Submissions</h2>
 
        {/* Table Header */}
-      <TableHeader headerTitles={headerTitles}/>
+      <TableHeader headerTitles={headerTitles} columns={6}/>
 
       {/* Table Rows */}
       <TableRows
@@ -90,26 +76,14 @@ export default function AssignmentGradingPage({ classId, assignmentId, onClose }
         editedScores={editedScores}
         setEditedScores={setEditedScores}
         handleSaveScore={handleSaveScore}
-        handleEditToggle={handleEditToggle}
+        handleEditToggle={(studentId, currentScore) =>
+          handleEditToggle(studentId, currentScore, setEditedScores, setEditing)
+        }
         saving={saving}
       />
 
       {/* Score Summary */}
-      <div className="mt-10 mb-10 bg-secondary text-white p-4 rounded-md shadow-md md:w-1/4">
-        <h3 className="text-lg font-semibold mb-3">Score Summary</h3>
-        <div className="flex gap-6">
-          <p>
-            <strong>Min:</strong> {stats.min}
-          </p>
-          <p>
-            <strong>Mean:</strong> {stats.mean.toFixed(2)}
-          </p>
-          <p>
-            <strong>Max:</strong> {stats.max}
-          </p>
-        </div>
-      </div>
-
+      <ScoreSummary stats={stats}/>
      
       <ModalFooter />
 

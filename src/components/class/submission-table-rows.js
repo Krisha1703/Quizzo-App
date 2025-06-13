@@ -1,4 +1,4 @@
-//Table Rows Component
+// Submission Table Rows Component
 
 const TableRows = ({ submissions = [], editing, editedScores, setEditedScores, handleSaveScore, handleEditToggle, saving }) => {
   return (
