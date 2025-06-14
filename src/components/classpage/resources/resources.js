@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import AddResources from "./add-resource";
 import SearchResources from "@/components/class/search";
 import ResourceTableRow from "./resource-table-rows";
+import TableHeader from "@/components/class/table-header";
 
 const Resources = ({ userRole, existingResources = [] }) => {
   const { classId } = useParams();
