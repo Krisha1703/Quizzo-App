@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ModalHeader from "./modal-header";
 import ModalFooter from "./modal-footer";
-import Button from "@/components/navbar/button";
+import Button from "@/components/Navbar/button";
 import { z } from "zod";
-import MenuItem from "@/components/navbar/menu-item";
+import MenuItem from "@/components/Navbar/menu-item";
 import { LoginSchema } from "../../../../schema";
 import { useRouter } from "next/navigation";
 

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ModalHeader from "@/components/homepage/modal/modal-header";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
-import Button from "@/components/navbar/button";
+import Button from "@/components/Navbar/button";
 import { handleInputChange, handleAddOutcome, handleAddSchedule, handleSave } from "./helper-functions";
 import InputField from "./input-field";
 import DynamicListInput from "./list-input-field";
