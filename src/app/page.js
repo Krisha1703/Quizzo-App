@@ -2,7 +2,7 @@
 
 "use client";
 import CardSlider from "@/components/homepage/card-slider";
-import Navbar from "@/components/navbar/navbar";
+import Navbar from "@/components/navigation-bar/navbar";
 import SignUp from "@/components/homepage/signup-section/signup";
 import Hero from "@/components/homepage/hero-section/hero";
 

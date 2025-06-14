@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import MenuItem from "@/components/navbar/menu-item";
+import MenuItem from "@/components/navigation-bar/menu-item";
 import Syllabus from "@/components/classpage/syllabus/syllabus";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
 import Image from "next/image";
