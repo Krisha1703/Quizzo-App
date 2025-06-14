@@ -1,8 +1,9 @@
-// components/classpage/assignment-table-rows.js
-import ActionMenu from "./action-menus";
+// Assignment Table Rows Component
+
+import ActionMenu from "../../class/action-menus";
 import { EllipsisVertical } from "lucide-react";
-import StudentSubmission from "../classpage/assignments/student-submission";
-import { handleExport } from "./helper-functions";
+import StudentSubmission from "./student-submission";
+import { handleExport } from "../../class/helper-functions";
 
 const AssignmentTableRows = ({
   assignments,

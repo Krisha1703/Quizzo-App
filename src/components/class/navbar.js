@@ -1,38 +1,23 @@
+// Navbar Component for Class Dashboard
+
 "use client";
-import React, { useState, useEffect } from "react";
+
+import { useState } from "react";
 import Image from "next/image";
-import MenuItem from "@/components/Navbar/menu-item";
-import SearchBar from "@/components/Navbar/search-bar";
+import MenuItem from "@/components/navbar/menu-item";
+import SearchBar from "@/components/navbar/search-bar";
 import { Drawer, IconButton, Modal, Box } from "@mui/material";
-import Button from "@/components/Navbar/button";
+import Button from "@/components/navbar/button";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import Login from "../homepage/modal/login";
-import Signup from "@/components/dashboard/create-class"; 
+import Signup from "@/components/class/create-class"; 
+import useUserData from "../../../hooks/use-user-data";
 
 const Navbar = () => {
+  const { userRole, firstName, lastName, initials } = useUserData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
-  const [initials, setInitials] = useState(null);
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
-  const [userRole, setUserRole] = useState(null);
   const [joinCode, setJoinCode] = useState("");
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        const firstName = user.firstName || "";
-        const lastName = user.lastName || "";
-        const userInitials = (firstName[0] || "") + (lastName[0] || "");
-        setInitials(userInitials.toUpperCase());
-        setFirst(firstName);
-        setLast(lastName);
-        setUserRole(user.role);
-      }
-    }
-  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -141,9 +126,9 @@ const Navbar = () => {
 
         <MenuItem title="FAQs" create />
 
-        {first || last ? (
+        {firstName || lastName ? (
           <div className="bg-secondary text-white rounded-md w-40 h-10 flex items-center mx-5 px-7 font-bold">
-            {first} {last}
+            {firstName} {lastName}
           </div>
         ) : (
           <Button text="Log in" onClick={openLoginModal} />

@@ -1,4 +1,4 @@
-import React from 'react'
+// Quizzes Component
 
 const Quizzes = () => {
   return (

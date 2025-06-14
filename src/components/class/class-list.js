@@ -1,43 +1,35 @@
+// Display Classes
+
 "use client";
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import EditClass from "@/components/dashboard/edit-class";
+import EditClass from "@/components/class/edit-class";
 import { EllipsisVertical } from "lucide-react";
-import { saveAs } from "file-saver";
+import { handleExport } from "./helper-functions";
 import ModalHeader from "@/components/homepage/modal/modal-header";
 import { useRouter } from "next/navigation";
+import useUserData from "../../../hooks/use-user-data";
+import TableHeader from "./table-header";
 
 
 export default function ClassList() {
+  const {userId, userRole} = useUserData;
+
   const [classes, setClasses] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [selectedClassId, setSelectedClassId] = useState(null);
   const [mobileMenuOpenId, setMobileMenuOpenId] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [userRole, setUserRole] = useState(null);
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      setUserId(user.userId);
-      setUserRole(user.role);
-      if (user.role == "Teacher") {
-        setActionMenuOpen(true);
-      }
-      else {
-        setActionMenuOpen(false); 
-      }
-    }
-  }, []);
 
-
+  if (userRole == "Teacher") setActionMenuOpen(true);
+  else setActionMenuOpen(false); 
+  
   useEffect(() => {
     if (!userId) return;
 
@@ -86,33 +78,6 @@ export default function ClassList() {
     }
   };
 
-const handleExport = (classId) => {
-  const cls = classes.find(c => c.classId === classId);
-  if (!cls) return;
-
-  const exportData = {
-    Name: cls.name,
-    CreatedAt: new Date(cls.createdAt).toLocaleString(),
-    Students: cls.totalStudents,
-    ClassCode: cls.classCode,
-    Schedule: cls.schedule || "-",
-    Description: cls.description || "-",
-    LearningOutcomes: Array.isArray(cls.learningOutcomes)
-      ? cls.learningOutcomes.join(", ")
-      : typeof cls.learningOutcomes === "string"
-      ? cls.learningOutcomes
-      : "-"
-  };
-
-  const csv = Object.entries(exportData)
-    .map(([key, val]) => `${key}, "${val}"`)
-    .join("\n");
-
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-  saveAs(blob, `${cls.name}_details.csv`);
-};
-
-
   const toggleMobileMenu = (classId) => {
     setMobileMenuOpenId((prev) => (prev === classId ? null : classId));
   };
@@ -129,18 +94,11 @@ const headerTitles = userRole === "Teacher"
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-4">
       {/* Header */}
-      <div className={`hidden md:grid ${userRole === "Teacher" ? "grid-cols-6" : "grid-cols-5"} gap-4`}>
-        {headerTitles.map((title) => (
-          <div
-            key={title}
-            className="bg-primary text-white font-semibold text-center py-2 px-3 rounded-lg shadow-sm"
-          >
-            {title}
-          </div>
-        ))}
-      </div>
+      {userRole === "Teacher" && (
+        <TableHeader headerTitles={headerTitles} columns={6}/>
+      )}
+      <TableHeader headerTitles={headerTitles} columns={5}/>
 
-   
       {classes.map((cls) => (
         <div key={cls.classId} className="space-y-1">
           {/* Desktop */}

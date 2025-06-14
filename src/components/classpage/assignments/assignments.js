@@ -4,12 +4,12 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import CreateAssignment from "./assignments/create-assignment";
-import TableHeader from "../class/table-header";
-import SearchAssignments from "./assignments/search-assignments";
-import GradingModal from "./assignments/grading-modal";
-import AssignmentTableRows from "../class/assignment-table-rows";
-import { fetchSubmissionStatus } from "./assignments/uploading-assignment";
+import CreateAssignment from "./create-assignment";
+import TableHeader from "../../class/table-header";
+import SearchAssignments from "../../class/search";
+import GradingModal from "./grading-modal";
+import AssignmentTableRows from "./assignment-table-rows";
+import { fetchSubmissionStatus } from "./uploading-assignment";
 
 const Assignments = ({ userRole, classId, userId}) => {
   const router = useRouter();
@@ -103,8 +103,8 @@ const Assignments = ({ userRole, classId, userId}) => {
         />
       )}
 
-      <div>
-        <SearchAssignments searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <>
+        <SearchAssignments searchQuery={searchQuery} setSearchQuery={setSearchQuery} heading={"Assignments"}/>
 
         {assignments.length === 0 ? (
           <p className="text-gray-500">No assignments yet.</p>
@@ -130,7 +130,7 @@ const Assignments = ({ userRole, classId, userId}) => {
           </>
 
         )}
-        </div>  
+      </>  
 
         {modalOpen && modalType === "edit" && (
           <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center">

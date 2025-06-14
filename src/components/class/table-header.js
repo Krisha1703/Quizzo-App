@@ -1,4 +1,4 @@
-//Table Header Component
+// Table Header Component
 
 const TableHeader = ({headerTitles = [], columns}) => {
   return (

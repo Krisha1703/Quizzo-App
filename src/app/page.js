@@ -1,7 +1,8 @@
+//Main Page
+
 "use client";
-import React from "react";
 import CardSlider from "@/components/homepage/card-slider";
-import Navbar from "@/components/Navbar/navbar";
+import Navbar from "@/components/navbar/navbar";
 import SignUp from "@/components/homepage/signup-section/signup";
 import Hero from "@/components/homepage/hero-section/hero";
 

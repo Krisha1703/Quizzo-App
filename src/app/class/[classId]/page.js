@@ -1,37 +1,26 @@
-// Main Class Page
+// Class Page
 
 "use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import clsx from "clsx";
-import MenuItem from "@/components/Navbar/menu-item";
-import Syllabus from "@/components/classpage/syllabus";
+import MenuItem from "@/components/navbar/menu-item";
+import Syllabus from "@/components/classpage/syllabus/syllabus";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
 import Image from "next/image";
-import Members from "@/components/classpage/members";
-import Resources from "@/components/classpage/resources";
-import Assignments from "@/components/classpage/assignments";
+import Members from "@/components/classpage/members/members";
+import Resources from "@/components/classpage/resources/resources";
+import Assignments from "@/components/classpage/assignments/assignments";
+import useUserData from "../../../../hooks/use-user-data";
 
 const ClassPage = () => {
   const { classId } = useParams();
+  const { userRole, userId } = useUserData();
+
   const [classData, setClassData] = useState(null);
   const [activeTab, setActiveTab] = useState("syllabus");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userRole, setUserRole] = useState(null);
-  const [userId, setUserId] = useState(null);
   
-    useEffect(() => {
-      if (typeof window !== "undefined") {
-        const storedUser = localStorage.getItem("user");
-        if (storedUser) {
-          const user = JSON.parse(storedUser);
-          setUserRole(user.role);
-          setUserId(user.userId);
-        }
-      }
-    }, []);
-
   useEffect(() => {
     const fetchClassData = async () => {
       try {
@@ -136,7 +125,7 @@ const ClassPage = () => {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <aside className={clsx("fixed top-0 left-0 h-full w-64 bg-primary text-white p-4 z-20 transform transition-transform duration-300 ease-in-out", sidebarOpen ? "translate-x-0" : "-translate-x-full")}>
+        <aside className={`fixed top-0 left-0 h-full w-64 bg-primary text-white p-4 z-20 transform transition-transform duration-300 ease-in-out", ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <nav className="space-y-8 mt-16">
             {tabs.map((tab) => (
               <div key={tab.key} onClick={() => {
@@ -155,6 +144,7 @@ const ClassPage = () => {
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-30 z-10" onClick={() => setSidebarOpen(false)} />
       )}
+
       <ModalFooter />
     </div>
   );

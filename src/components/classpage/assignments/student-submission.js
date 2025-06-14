@@ -1,4 +1,4 @@
-//Handle Student Assingment Submission
+// Handle Student Assingment Submission
 
 import { handleStudentSubmit } from "./uploading-assignment"
 

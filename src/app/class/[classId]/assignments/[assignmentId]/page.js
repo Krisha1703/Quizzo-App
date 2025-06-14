@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import ModalHeader from "@/components/homepage/modal/modal-header";
 import ModalFooter from "@/components/homepage/modal/modal-footer";
 import TableHeader from "@/components/class/table-header";
-import TableRows from "@/components/class/submission-table-rows";
+import SubmissionTableRows from "@/components/classpage/assignments/submission-table-rows";
 import {updateStats, handleEditToggle} from "@/components/classpage/assignments/grading-helpers"
 import ScoreSummary from "@/components/classpage/assignments/score-summary";
 
 export default function AssignmentGradingPage({ classId, assignmentId, onClose }) {
-
+  
   const [submissions, setSubmissions] = useState([]);
   const [editedScores, setEditedScores] = useState({});
   const [editing, setEditing] = useState({});
@@ -70,7 +70,7 @@ export default function AssignmentGradingPage({ classId, assignmentId, onClose }
       <TableHeader headerTitles={headerTitles} columns={6}/>
 
       {/* Table Rows */}
-      <TableRows
+      <SubmissionTableRows
         submissions={submissions}
         editing={editing}
         editedScores={editedScores}

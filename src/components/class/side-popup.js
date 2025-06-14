@@ -1,3 +1,5 @@
+// Did You Know Fact Pop Up Component
+
 "use client";
 
 import { useState, useEffect } from "react";

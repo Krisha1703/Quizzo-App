@@ -1,3 +1,5 @@
+//Syllabus Component
+
 import Image from "next/image"
 import { motion } from "framer-motion"
 
@@ -7,7 +9,7 @@ const Syllabus = ({ description, learningOutcomes, schedules }) => {
       <h2 className="text-xl font-semibold mb-4">Course Description</h2>
       <p className="mb-6">{description}</p>
 
-        <h3 className="text-xl font-semibold mb-4">Learning Outcomes</h3>
+      <h3 className="text-xl font-semibold mb-4">Learning Outcomes</h3>
       <ul className="space-y-3">
         {learningOutcomes.map((outcome, index) => (
             <li key={index} className="flex items-center gap-2">
@@ -18,7 +20,7 @@ const Syllabus = ({ description, learningOutcomes, schedules }) => {
         </ul>
 
 
-       <h3 className="text-xl font-semibold mt-8 mb-4">Class Schedule</h3>
+    <h3 className="text-xl font-semibold mt-8 mb-4">Class Schedule</h3>
      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {schedules.map((schedule, index) => {
 

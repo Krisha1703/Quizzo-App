@@ -1,9 +1,9 @@
-//Search Assignments Component
+//Search Component
 
-const SearchAssignments = ({searchQuery, setSearchQuery}) => {
+const Search = ({searchQuery, setSearchQuery, heading}) => {
   return (
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-        <h2 className="text-lg font-semibold">Assignments</h2>
+        <h2 className="text-lg font-semibold">{heading}</h2>
         <input
             type="text"
             placeholder="Search..."
@@ -15,4 +15,4 @@ const SearchAssignments = ({searchQuery, setSearchQuery}) => {
   )
 }
 
-export default SearchAssignments
+export default Search

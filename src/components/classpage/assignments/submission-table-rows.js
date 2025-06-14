@@ -1,6 +1,6 @@
 // Submission Table Rows Component
 
-const TableRows = ({ submissions = [], editing, editedScores, setEditedScores, handleSaveScore, handleEditToggle, saving }) => {
+const SubmissionTableRows = ({ submissions = [], editing, editedScores, setEditedScores, handleSaveScore, handleEditToggle, saving }) => {
   return (
     <div className="space-y-4">
       {submissions.map((s) => {
@@ -96,4 +96,4 @@ const TableRows = ({ submissions = [], editing, editedScores, setEditedScores, h
   );
 };
 
-export default TableRows;
+export default SubmissionTableRows;
