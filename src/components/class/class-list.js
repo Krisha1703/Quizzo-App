@@ -14,7 +14,7 @@ import TableHeader from "./table-header";
 
 
 export default function ClassList() {
-  const {userId, userRole} = useUserData();
+  const {userId, userRole} = useUserData;
 
   const [classes, setClasses] = useState([]);
   const [error, setError] = useState(null);
@@ -26,12 +26,17 @@ export default function ClassList() {
   const [actionMenuOpen, setActionMenuOpen] = useState(false);
   const router = useRouter();
 
-  if (!userId) return;
-
-  if (userRole == "Teacher") setActionMenuOpen(true);
-  else setActionMenuOpen(false); 
+ useEffect(() => {
+    if (userRole === "Teacher") {
+      setActionMenuOpen(true);
+    } else {
+      setActionMenuOpen(false);
+    }
+  }, [userRole]);
   
   useEffect(() => {
+    if (!userId) return;
+
     const fetchClasses = async () => {
       try {
         const res = await fetch(`/api/class/list?userId=${userId}`);
