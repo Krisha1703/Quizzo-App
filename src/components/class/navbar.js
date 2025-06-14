@@ -1,4 +1,4 @@
-// Navbar Component for the Class Dashboard
+// Navbar Component for Class Dashboard
 
 "use client";
 
