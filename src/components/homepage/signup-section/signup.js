@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import Button from "@/components/navbar/button";
+import Button from "@/components/Navbar/button";
 import TypeWritting from "./typwritting";
 import Review from "./review";
 import Subtext from "./subtext";
