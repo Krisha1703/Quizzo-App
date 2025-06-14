@@ -1,4 +1,4 @@
-// Display Classes
+// Display List of Classes Available to Teachers or Students
 
 "use client";
 
