@@ -30,9 +30,9 @@ export default function ClassList() {
   if (userRole == "Teacher") setActionMenuOpen(true);
   else setActionMenuOpen(false); 
   
+   if (!userId) return;
+   
   useEffect(() => {
-    if (!userId) return;
-
     const fetchClasses = async () => {
       try {
         const res = await fetch(`/api/class/list?userId=${userId}`);
