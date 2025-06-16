@@ -16,6 +16,7 @@ const AssignmentTableRows = ({
   toggleMobileMenu,
   setStudentFile,
   setSubmittingAssignmentId,
+  mobileMenuOpenId,
   router
 }) => {
   return (
@@ -62,6 +63,7 @@ const AssignmentTableRows = ({
 
           <ActionMenu
             isOpen={actionMenuOpen}
+            assignment={true}
             actions={[
               {
                 name: "edit",
@@ -139,6 +141,46 @@ const AssignmentTableRows = ({
                 <button onClick={() => toggleMobileMenu(assignment.assignmentId)}>
                   <EllipsisVertical className="w-6 h-6 text-white" />
                 </button>
+                {mobileMenuOpenId === assignment.assignmentId && (
+                <ActionMenu
+                  isOpen={actionMenuOpen}
+                  assignment={true}
+                  actions={[
+                    {
+                      name: "edit",
+                      icon: "/Assets/edit.svg",
+                      alt: "Edit",
+                      width: 30,
+                      height: 30,
+                      onClick: () => openModal("edit", assignment.assignmentId),
+                    },
+                    {
+                      name: "delete",
+                      icon: "/Assets/delete.svg",
+                      alt: "Delete",
+                      width: 30,
+                      height: 30,
+                      onClick: () => openModal("delete", assignment.assignmentId),
+                    },
+                    {
+                      name: "grade",
+                      icon: "/Assets/grade.svg",
+                      alt: "Grade",
+                      width: 30,
+                      height: 30,
+                      onClick: () => setGradingAssignment(assignment),
+                    },
+                    {
+                      name: "export",
+                      icon: "/Assets/download.svg",
+                      alt: "Export",
+                      width: 25,
+                      height: 25,
+                      onClick: () => handleExport(null, assignment.assignmentId, [], assignments),
+                    },
+                  ]}
+                />
+                )}
               </div>
             )}
 

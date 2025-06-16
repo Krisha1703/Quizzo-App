@@ -124,6 +124,7 @@ const Assignments = ({ userRole, classId, userId}) => {
               toggleMobileMenu={toggleMobileMenu}
               setStudentFile={setStudentFile}
               setSubmittingAssignmentId={setSubmittingAssignmentId}
+              mobileMenuOpenId={mobileMenuOpenId}
               router={router}
             />
 

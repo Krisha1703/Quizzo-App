@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import ModalHeader from "./modal-header";
 import ModalFooter from "./modal-footer";
-import Button from "@/components/navigation-bar/button";
+import Button from "@/components/navbar/button";
 import { SignUpSchema } from "../../../../schema";
 import { z } from "zod";
-import MenuItem from "@/components/navigation-bar/menu-item";
+import MenuItem from "@/components/navbar/menu-item";
 import Login from "./login";
 
 const Signup = ({ onClose, onSwitchToLogin }) => {

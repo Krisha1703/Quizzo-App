@@ -4,10 +4,10 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import MenuItem from "@/components/navigation-bar/menu-item";
-import SearchBar from "@/components/navigation-bar/search-bar";
+import MenuItem from "@/components/navbar/menu-item";
+import SearchBar from "@/components/navbar/search-bar";
 import { Drawer, IconButton, Modal, Box } from "@mui/material";
-import Button from "@/components/navigation-bar/button";
+import Button from "@/components/navbar/button";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import Login from "../homepage/modal/login";
 import Signup from "@/components/class/create-class"; 
