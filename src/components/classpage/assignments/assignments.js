@@ -35,6 +35,7 @@ const Assignments = ({ userRole, classId, userId}) => {
     const fetchAssignments = async () => {
     const res = await fetch(`/api/class/${classId}/assignments?userId=${userId}`);
     const data = await res.json();
+    console.log("Assignments Data: ",data);
 
     if (!res.ok) return alert("Failed to load assignments");
 
@@ -79,7 +80,7 @@ const Assignments = ({ userRole, classId, userId}) => {
 
   const headerTitles = userRole === "Teacher"
     ? ["Assignment", "Created At", "Due At", "Submissions", "Actions" ]
-    : ["Assignment", "Description", "Created At", "Due At", "Submissions" ];
+    : ["Assignment", "Created At", "Due At", "Submissions" ];
 
   const filteredAssignments = useMemo(() => {
     const q = searchQuery.toLowerCase();

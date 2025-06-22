@@ -11,6 +11,7 @@ import Image from "next/image";
 import Members from "@/components/classpage/members/members";
 import Resources from "@/components/classpage/resources/resources";
 import Assignments from "@/components/classpage/assignments/assignments";
+import ScoreBook from "@/components/classpage/scorebook/scorebook";
 import useUserData from "../../../../hooks/use-user-data";
 
 const ClassPage = () => {
@@ -95,7 +96,13 @@ const ClassPage = () => {
           />
         );
       case "scorebook":
-        return <div className="text-primary">📊 Scorebook display</div>;
+        return (
+          <ScoreBook 
+            userRole={userRole}
+            userId={userId}
+            classId={classId}
+          />
+        );
       default:
         return null;
     }

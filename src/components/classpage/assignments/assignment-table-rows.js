@@ -17,7 +17,7 @@ const AssignmentTableRows = ({
   setStudentFile,
   setSubmittingAssignmentId,
   mobileMenuOpenId,
-  router
+  router,
 }) => {
   return (
     <>
@@ -31,11 +31,6 @@ const AssignmentTableRows = ({
             {assignment.title}
           </div>
 
-          {!actionMenuOpen && (
-            <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
-              {assignment.description}
-            </div>
-          )}
 
           <div className="bg-secondary text-white px-3 py-2 rounded-lg text-center truncate">
             {new Date(assignment.createdAt).toLocaleString()}
@@ -45,7 +40,7 @@ const AssignmentTableRows = ({
             {new Date(assignment.dueDate).toLocaleString()}
           </div>
 
-          <div className="text-white px-3 py-2 rounded-lg text-center w-full">
+          <div className="text-white px-3 py-2 rounded-lg text-center w-full ">
             {userRole === "Teacher" && assignment.submissionStats && (
               <div className="flex gap-2">
                 <button className="bg-green-500 px-3 py-2 rounded-md w-1/3 text-md font-medium">
@@ -59,7 +54,20 @@ const AssignmentTableRows = ({
                 </button>
               </div>
             )}
+
+
+          {userRole === "Student" && (
+              <StudentSubmission
+                assignment={assignment}
+                setStudentFile={setStudentFile}
+                userId={userId}
+                setSubmittingAssignmentId={setSubmittingAssignmentId}
+              />
+            )}
+           
+            
           </div>
+
 
           <ActionMenu
             isOpen={actionMenuOpen}
@@ -99,6 +107,8 @@ const AssignmentTableRows = ({
               },
             ]}
           />
+
+         
         </div>
       ))}
 
@@ -136,50 +146,70 @@ const AssignmentTableRows = ({
               </div>
             )}
 
+            {userRole === "Student" && (
+              <div className="flex gap-2 justify-center mt-2">
+                {assignment.submissionStatus === "On Time" && (
+                  <button className="bg-green-500 px-3 py-2 rounded-md text-md font-medium">
+                    On-Time
+                  </button>
+                )}
+                {assignment.submissionStatus === "Late" && (
+                  <button className="bg-yellow-500 px-3 py-2 rounded-md text-md font-medium">
+                    Late
+                  </button>
+                )}
+                {assignment.submissionStatus === "Not Submitted" && (
+                  <button className="bg-red-500 px-3 py-2 rounded-md text-md font-medium">
+                    Not Submitted
+                  </button>
+                )}
+              </div>
+            )}
+
             {userRole === "Teacher" && (
               <div className="relative mt-3 flex justify-end">
                 <button onClick={() => toggleMobileMenu(assignment.assignmentId)}>
                   <EllipsisVertical className="w-6 h-6 text-white" />
                 </button>
                 {mobileMenuOpenId === assignment.assignmentId && (
-                <ActionMenu
-                  isOpen={actionMenuOpen}
-                  assignment={true}
-                  actions={[
-                    {
-                      name: "edit",
-                      icon: "/Assets/edit.svg",
-                      alt: "Edit",
-                      width: 30,
-                      height: 30,
-                      onClick: () => openModal("edit", assignment.assignmentId),
-                    },
-                    {
-                      name: "delete",
-                      icon: "/Assets/delete.svg",
-                      alt: "Delete",
-                      width: 30,
-                      height: 30,
-                      onClick: () => openModal("delete", assignment.assignmentId),
-                    },
-                    {
-                      name: "grade",
-                      icon: "/Assets/grade.svg",
-                      alt: "Grade",
-                      width: 30,
-                      height: 30,
-                      onClick: () => setGradingAssignment(assignment),
-                    },
-                    {
-                      name: "export",
-                      icon: "/Assets/download.svg",
-                      alt: "Export",
-                      width: 25,
-                      height: 25,
-                      onClick: () => handleExport(null, assignment.assignmentId, [], assignments),
-                    },
-                  ]}
-                />
+                  <ActionMenu
+                    isOpen={actionMenuOpen}
+                    assignment={true}
+                    actions={[
+                      {
+                        name: "edit",
+                        icon: "/Assets/edit.svg",
+                        alt: "Edit",
+                        width: 30,
+                        height: 30,
+                        onClick: () => openModal("edit", assignment.assignmentId),
+                      },
+                      {
+                        name: "delete",
+                        icon: "/Assets/delete.svg",
+                        alt: "Delete",
+                        width: 30,
+                        height: 30,
+                        onClick: () => openModal("delete", assignment.assignmentId),
+                      },
+                      {
+                        name: "grade",
+                        icon: "/Assets/grade.svg",
+                        alt: "Grade",
+                        width: 30,
+                        height: 30,
+                        onClick: () => setGradingAssignment(assignment),
+                      },
+                      {
+                        name: "export",
+                        icon: "/Assets/download.svg",
+                        alt: "Export",
+                        width: 25,
+                        height: 25,
+                        onClick: () => handleExport(null, assignment.assignmentId, [], assignments),
+                      },
+                    ]}
+                  />
                 )}
               </div>
             )}
