@@ -33,10 +33,12 @@ const Navbar = () => {
 
         {/* Navbar Menu for Desktop */}
         <div className="hidden lg:flex space-x-6 ml-10">
-          <MenuItem title="About" />
-          <MenuItem title="Quizzes" create />
-          <MenuItem title="Learn" />
-          <MenuItem title="Contact" create />
+
+          <MenuItem title="About" link={"/about-us"}/>
+          <MenuItem title="Quizzes" create link={"/quizzes"}/>
+          <MenuItem title="Learn" link={"/learn"}/>
+          <MenuItem title="Contact" create link={"/contact-us"}/>
+
         </div>
 
         {/* Search Bar for Desktop */}
@@ -86,10 +88,10 @@ const Navbar = () => {
         </div>
 
         {/* Menu Items in Column Format */}
-        <MenuItem title="About" />
-        <MenuItem title="Quizzes" create />
-        <MenuItem title="Learn" />
-        <MenuItem title="Contact" create />
+        <MenuItem title="About" link={"/about-us"}/>
+        <MenuItem title="Quizzes" create link={"/quizzes"}/>
+        <MenuItem title="Learn" link={"/learn"}/>
+        <MenuItem title="Contact" create link={"/contact-us"}/>
         <MenuItem title="+ Create" create />
         <Button text={"Log in"} onClick={openLoginModal} />
       </Drawer>

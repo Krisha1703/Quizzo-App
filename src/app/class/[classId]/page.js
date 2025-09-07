@@ -13,10 +13,12 @@ import Resources from "@/components/classpage/resources/resources";
 import Assignments from "@/components/classpage/assignments/assignments";
 import ScoreBook from "@/components/classpage/scorebook/scorebook";
 import useUserData from "../../../../hooks/use-user-data";
+import { useRouter } from "next/navigation";
 
 const ClassPage = () => {
   const { classId } = useParams();
   const { userRole, userId } = useUserData();
+  const router = useRouter();
 
   const [classData, setClassData] = useState(null);
   const [activeTab, setActiveTab] = useState("syllabus");
@@ -42,11 +44,13 @@ const ClassPage = () => {
 
   const tabs = [
     { key: "syllabus", label: "Syllabus" },
-    { key: "quizzes", label: "Quizzes" },
     { key: "members", label: "Members" },
     { key: "resources", label: "Resources" },
     { key: "assignments", label: "Assignments" },
     { key: "scorebook", label: "Scorebook" },
+    { key: "back", label: "Go Back" },
+    { key: "home", label: "Home" },
+    
   ];
 
   const renderContent = () => {
@@ -59,8 +63,7 @@ const ClassPage = () => {
             schedules={classData?.schedule?.split(", ") || []}
           />
         );
-      case "quizzes":
-        return <div className="text-primary">📝 Quizzes content goes here</div>;
+        
       case "members":
         return (
           <Members 
@@ -103,6 +106,13 @@ const ClassPage = () => {
             classId={classId}
           />
         );
+
+      case "back":
+        router.back(); 
+
+      case "home":
+        router.push("/"); 
+
       default:
         return null;
     }
@@ -135,10 +145,19 @@ const ClassPage = () => {
         <aside className={`fixed top-0 left-0 h-full w-64 bg-primary text-white p-4 z-20 transform transition-transform duration-300 ease-in-out", ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <nav className="space-y-8 mt-16">
             {tabs.map((tab) => (
-              <div key={tab.key} onClick={() => {
-                setActiveTab(tab.key);
-                setSidebarOpen(false);
-              }}>
+              <div 
+                key={tab.key} 
+                onClick={() => {
+                  if (tab.key === "home") {
+                    router.push("/"); // redirect home
+                  } else if (tab.key === "back") {
+                    router.back(); // go back in history
+                  } else {
+                    setActiveTab(tab.key);
+                  }
+                  setSidebarOpen(false);
+                }}
+              >
                 <MenuItem title={tab.label} active={activeTab === tab.key} panel={true} />
               </div>
             ))}
