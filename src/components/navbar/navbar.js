@@ -7,6 +7,8 @@ import Button from "./button";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import Login from "../homepage/modal/login";
 import Signup from "../homepage/modal/signup"; 
+import useUserData from "../../../hooks/use-user-data";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,6 +25,7 @@ const Navbar = () => {
       {/* Navbar stays fixed at top */}
       <div className="flex items-center justify-between p-4 py-1 mx-5 z-50 bg-white">
         {/* Logo */}
+        <Link href="/">
         <Image
           src="/Assets/hovered-logo.png"
           width={120}
@@ -30,13 +33,14 @@ const Navbar = () => {
           alt="logo"
           className="cursor-pointer"
         />
+        </Link>
 
         {/* Navbar Menu for Desktop */}
         <div className="hidden lg:flex space-x-6 ml-10">
 
           <MenuItem title="About" link={"/about-us"}/>
           <MenuItem title="Quizzes" create link={"/quizzes"}/>
-          <MenuItem title="Learn" link={"/learn"}/>
+          <MenuItem title="How It Works" link={"/how-iit-works"}/>
           <MenuItem title="Contact" create link={"/contact-us"}/>
 
         </div>
@@ -47,7 +51,10 @@ const Navbar = () => {
         </div>
 
         {/* Create Button */}
-        <MenuItem title="+ Create" create />
+        {/* <MenuItem title="+ Create" create /> */}
+        <div className="hidden lg:block">
+          <Button text={"Sign Up"} signup onClick={openSignupModal} />
+        </div>
 
         {/* Login Button */}
         <div className="hidden lg:block">
@@ -90,9 +97,10 @@ const Navbar = () => {
         {/* Menu Items in Column Format */}
         <MenuItem title="About" link={"/about-us"}/>
         <MenuItem title="Quizzes" create link={"/quizzes"}/>
-        <MenuItem title="Learn" link={"/learn"}/>
+        <MenuItem title="How It Works" link={"/how-it-works"}/>
         <MenuItem title="Contact" create link={"/contact-us"}/>
-        <MenuItem title="+ Create" create />
+        {/* <MenuItem title="+ Create" create /> */}
+        <Button text={"Sign Up"} onClick={openSignupModal} />
         <Button text={"Log in"} onClick={openLoginModal} />
       </Drawer>
 

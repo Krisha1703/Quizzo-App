@@ -12,12 +12,13 @@ import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
 import Login from "../homepage/modal/login";
 import Signup from "@/components/class/create-class"; 
 import useUserData from "../../../hooks/use-user-data";
+import JoinClass from "../homepage/modal/join-class";
+import Link from "next/link";
 
 const Navbar = () => {
   const { userRole, firstName, lastName, initials } = useUserData();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState(null);
-  const [joinCode, setJoinCode] = useState("");
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -25,27 +26,13 @@ const Navbar = () => {
   const openSignupModal = () => setActiveModal("signup");
   const closeModal = () => setActiveModal(null);
 
-  const handleJoinClass = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      const response = await fetch("/api/class/join", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ classCode: joinCode, studentId: user.userId }),
-      });
-      const result = await response.json();
-      alert(result.message || result.error);
-      setJoinCode("");
-      closeModal();
-    } catch (error) {
-      alert("Failed to join class.");
-    }
-  };
+
 
   return (
     <div className="relative z-50 bg-white">
       {/* Desktop Navbar */}
       <div className="hidden lg:flex items-center justify-between p-4 py-1 mx-5">
+        <Link href="/">
         <Image
           src="/Assets/hovered-logo.png"
           width={120}
@@ -53,6 +40,7 @@ const Navbar = () => {
           alt="logo"
           className="cursor-pointer"
         />
+        </Link>
 
         <MenuItem title="Classes" create />
         <MenuItem title="Quizzes" create />
@@ -161,22 +149,7 @@ const Navbar = () => {
               onSwitchToSignup={() => setActiveModal("signup")}
             />
           ) : (
-            <Box sx={{ p: 4 }}>
-              <h2>Join a Class</h2>
-              <input
-                type="text"
-                placeholder="Enter Class Code"
-                value={joinCode}
-                onChange={(e) => setJoinCode(e.target.value)}
-                className="border p-2 w-full my-4"
-              />
-              <button
-                onClick={handleJoinClass}
-                className="bg-blue-600 text-white px-4 py-2 rounded"
-              >
-                Join
-              </button>
-            </Box>
+           <JoinClass onClose={closeModal}/>
           )}
         </Box>
       </Modal>

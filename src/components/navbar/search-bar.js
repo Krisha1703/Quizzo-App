@@ -6,7 +6,7 @@ const SearchBar = () => {
   const [focused, setFocused] = useState(false);
 
   return (
-    <div className="flex justify-center items-center w-full">
+    <div className="flex justify-center items-center w-5/6 mx-auto">
       <TextField
         variant="filled"
         placeholder="Search..."

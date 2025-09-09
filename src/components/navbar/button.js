@@ -1,10 +1,10 @@
 
 import {motion} from "framer-motion";
 
-const Button = ({text, onClick, type}) => {
+const Button = ({text, onClick, type, signup}) => {
   return (
     <motion.button 
-        className='bg-primary hover:bg-secondary p-2 px-6 text-xl text-white font-semibold rounded-md text-center'
+        className={`${signup ? "bg-secondary hover:bg-primary" : " bg-primary hover:bg-secondary"}  p-2 px-6 text-xl text-white font-semibold rounded-md text-center`}
         initial={{y: 0}}
         whileHover={{y: -5}}
         onClick={onClick}
