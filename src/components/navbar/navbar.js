@@ -10,7 +10,7 @@ import Signup from "../homepage/modal/signup";
 import useUserData from "../../../hooks/use-user-data";
 import Link from "next/link";
 
-const Navbar = () => {
+const Navbar = ({home, menupage}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState(false);
 
@@ -36,31 +36,30 @@ const Navbar = () => {
         </Link>
 
         {/* Navbar Menu for Desktop */}
-        <div className="hidden lg:flex space-x-6 ml-10">
+        <div
+          className={`hidden lg:flex ml-10 flex-1 ${
+            home ? "space-x-6" : " justify-evenly"
+          }`}
+        >
 
-          <MenuItem title="About" link={"/about-us"}/>
-          <MenuItem title="Quizzes" create link={"/quizzes"}/>
-          <MenuItem title="How It Works" link={"/how-iit-works"}/>
-          <MenuItem title="Contact" create link={"/contact-us"}/>
+          <MenuItem title="About" link={"/about-us"} menupage={menupage}/>
+          <MenuItem title="Quizzes" create link={"/quizzes"}menupage={menupage}/>
+          <MenuItem title="How It Works" link={"/how-iit-works"} menupage={menupage}/>
+          <MenuItem title="Contact" create link={"/contact-us"} menupage={menupage}/>
 
         </div>
 
         {/* Search Bar for Desktop */}
-        <div className="hidden lg:flex flex-1 max-w-sm">
+        <div className={` ${home ? 'hidden lg:flex flex-1' : ' hidden' }  max-w-sm`}>
           <SearchBar />
         </div>
 
         {/* Create Button */}
-        {/* <MenuItem title="+ Create" create /> */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block space-x-2">
           <Button text={"Sign Up"} signup onClick={openSignupModal} />
-        </div>
-
-        {/* Login Button */}
-        <div className="hidden lg:block">
           <Button text={"Log in"} onClick={openLoginModal} />
         </div>
-
+     
         {/* Hamburger Icon for Mobile */}
         <div className="lg:hidden">
           <IconButton onClick={toggleMenu} color="primary">

@@ -18,7 +18,7 @@ export default function Home() {
 
   return (
     <div className="w-full mx-auto my-5">
-      <Navbar />
+      <Navbar home={true} menupage={false}/>
       <Hero />
       <SignUp />
       <CardSlider cards={cards} />

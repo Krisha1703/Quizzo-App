@@ -1,25 +1,36 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-const MenuItem = ({ title, create, panel, onClick, link }) => {
+const MenuItem = ({ title, create, panel, onClick, link, menupage }) => {
+  const pathname = usePathname(); // get current route
+  const isActive = link && pathname === link; // check if active
+
   const Content = (
     <div
       className={`relative group cursor-pointer flex flex-col ${
         panel ? "items-start" : "items-center"
       }`}
-      onClick={!link ? onClick : undefined} 
+      onClick={!link ? onClick : undefined}
     >
       <motion.h1
-        className={`font-semibold ${
+        className={`font-semibold transition-colors ${
           panel
-            ? "text-white text-left text-lg"
-            : "text-primary text-center text-xl"
+            ? `text-left ${menupage ? "text-2xl" : "text-lg"}`
+            : `text-center ${menupage ? "text-2xl" : "text-xl"}`
+        } ${
+          isActive
+            ? "text-secondary " // highlight current
+            : panel
+            ? "text-white"
+            : "text-primary"
         } group-hover:text-secondary`}
       >
         {title}
       </motion.h1>
 
+      {/* Arrow animation */}
       <motion.div
         initial={{ opacity: 0, y: -5, x: 10 }}
         animate={{ opacity: 1, y: 5 }}
