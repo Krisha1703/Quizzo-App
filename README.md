@@ -105,6 +105,9 @@ Once logged in, users see a dashboard based on their role — **Teacher** or **S
 - 🚀 Add categories & difficulty levels
 - 🚀 More quiz types (true/false, fill in the blanks, etc.)
 
+### 🖥️ Figma UI Design
+https://www.figma.com/design/uzLAhhR3wwFsmM0iD6VJzN/Quizzo?node-id=0-1&t=i6jiAAZFQfSps2Uz-1
+
 ### 🖥️ Live Deployed Link
 https://quizzo-app-krisha.vercel.app/
 
