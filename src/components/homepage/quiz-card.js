@@ -3,9 +3,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-const Card = ({ title, src, href }) => {
+const Card = ({ title, src, href, quizpage }) => {
   return (
-    <div className="rounded-md overflow-hidden md:w-1/4 w-5/6 h-full shadow-lg md:my-10 my-5">
+    <div className={`rounded-md overflow-hidden ${quizpage ? 'md:w-[23%]' : 'md:w-1/4'}  w-5/6 h-full shadow-lg md:my-10 my-5`}>
       {/* Title Section */}
       <div className="bg-primary text-white text-center py-2 text-lg font-semibold">
         {title}

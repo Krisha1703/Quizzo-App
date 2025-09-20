@@ -1,62 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import Navbar from "@/components/navbar/navbar";
+import HeroSection from "@/components/menu-page/hero-section";
+import SectionHeader from "@/components/menu-page/section-header";
+import Image from "next/image";
+import ContactForm from "@/components/menu-page/contact-form";
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Message sent! (Replace with API call)");
-    setForm({ name: "", email: "", message: "" });
-  };
-
   return (
-    <div className="max-w-3xl mx-auto py-12 px-6">
-      <h1 className="text-3xl font-bold text-primary mb-6">Contact Us</h1>
-      <p className="text-gray-700 mb-8">
-        Have questions, feedback, or issues? Reach out to us below.
-      </p>
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 p-6 border rounded-lg shadow-sm bg-white"
-      >
-        <input
-          type="text"
-          name="name"
-          placeholder="Your Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          className="w-full border p-3 rounded-lg"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Your Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          className="w-full border p-3 rounded-lg"
-        />
-        <textarea
-          name="message"
-          placeholder="Your Message"
-          value={form.message}
-          onChange={handleChange}
-          required
-          className="w-full border p-3 rounded-lg h-32"
-        />
-        <button
-          type="submit"
-          className="px-6 py-2 bg-primary text-white rounded-lg"
-        >
-          Send Message
-        </button>
-      </form>
+    <div className="w-full mx-auto my-5 ">
+      <Navbar home={false} menupage={true}/>
+
+      <HeroSection
+        title="Contact Us"
+        content="At Quizzo, we value every question, idea, and piece of feedback from our learners, teachers, and community. 
+        Whether you need support, want to collaborate, or just say hello — we’re here to listen and help."
+        btntext1="Get in Touch"
+        btnlink1="/contact-us"
+        image="/Assets/contact-us.png"
+      />
+
+      <div className="mx-10 mt-10">
+        <SectionHeader headingText="Let’s Connect" />
+        <p className="text-xl my-3 max-w-2xl">We’re here to answer questions, hear your ideas, and support your learning journey. Reach out anytime — we’d love to connect!</p>
+        <div className="flex justify-between mx-20">
+          <Image src="/Assets/connect.png" width={400} height={400} alt="Email" />
+          <ContactForm />
+        </div>
+
+      </div>
+
     </div>
   );
 }

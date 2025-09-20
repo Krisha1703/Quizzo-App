@@ -5,6 +5,7 @@ import CardSlider from "@/components/homepage/card-slider";
 import Navbar from "@/components/navbar/navbar";
 import SignUp from "@/components/homepage/signup-section/signup";
 import Hero from "@/components/homepage/hero-section/hero";
+import HowItWorks from "@/components/homepage/how-it-works-section/how-it-works";
 
 export default function Home() {
   const cards = [
@@ -22,6 +23,7 @@ export default function Home() {
       <Hero />
       <SignUp />
       <CardSlider cards={cards} />
+      <HowItWorks />
     </div>
   );
 }

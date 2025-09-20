@@ -44,7 +44,7 @@ const Navbar = ({home, menupage}) => {
 
           <MenuItem title="About" link={"/about-us"} menupage={menupage}/>
           <MenuItem title="Quizzes" create link={"/quizzes"}menupage={menupage}/>
-          <MenuItem title="How It Works" link={"/how-iit-works"} menupage={menupage}/>
+          <MenuItem title="How It Works" link={"/how-it-works"} menupage={menupage}/>
           <MenuItem title="Contact" create link={"/contact-us"} menupage={menupage}/>
 
         </div>

@@ -34,9 +34,12 @@ const HeroSection = ({title, content, btntext1, btntext2, btnlink1, btnlink2, im
                     <Button text={btntext1} />
                 </Link>
                 
-                <Link href={btnlink2}>
+               {btntext2 && btnlink2 && (
+                  <Link href={btnlink2}>
                     <Button text={btntext2} />
-                </Link>
+                  </Link>
+                )}
+
             </div>
 
         </div>

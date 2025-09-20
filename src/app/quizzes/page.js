@@ -1,58 +1,74 @@
 "use client";
 
-import { useState } from "react";
+import Navbar from "@/components/navbar/navbar";
+import SectionHeader from "@/components/menu-page/section-header";
+import Image from "next/image";
+import Card from "@/components/homepage/quiz-card";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { Search } from "@mui/icons-material";
 
-export default function QuizzesPage() {
-  const [selectedQuiz, setSelectedQuiz] = useState(null);
-
-  const quizzes = [
-    { id: 1, title: "General Knowledge", questions: 10 },
-    { id: 2, title: "Math Practice", questions: 15 },
-    { id: 3, title: "Science Basics", questions: 12 },
+export default function QuizPage() {
+   const cards = [
+    { title: "General Knowledge", src: "/Assets/general-knowledge.png", href: "/instruction" },
+    { title: "Science & Nature", src: "/Assets/science-nature.png", href: "/instruction" },
+    { title: "History", src: "/Assets/history.png", href: "/instruction" },
+    { title: "Geography", src: "/Assets/geography.png", href: "/instruction" },
+    { title: "General Knowledge", src: "/Assets/general-knowledge.png", href: "/instruction" },
+    { title: "Science & Nature", src: "/Assets/science-nature.png", href: "/instruction" },
+    { title: "History", src: "/Assets/history.png", href: "/instruction" },
+    { title: "Geography", src: "/Assets/geography.png", href: "/instruction" },
   ];
+  
+  return (
+    <div className="w-full mx-auto my-5 ">
+      <Navbar home={false} menupage={true}/>
 
-  if (selectedQuiz) {
-    return (
-      <div className="max-w-3xl mx-auto py-12 px-6">
-        <button
-          onClick={() => setSelectedQuiz(null)}
-          className="text-primary underline mb-4"
-        >
-          ← Back to quizzes
+      <div className="mx-10 mt-10">
+        <SectionHeader headingText="Explore Quizzes" />
+        <p className="text-xl my-3 max-w-2xl">Choose from a wide range of quizzes to challenge yourself and learn.</p>
+
+        <div className="flex items-center justify-between gap-4 w-full">
+      {/* Left side buttons */}
+      <div className="flex items-center gap-3">
+        {/* Category Button */}
+        <button className="flex items-center gap-1 px-10 py-2 rounded-md bg-primary text-white transition">
+          <span>Category</span>
+          <ExpandMoreIcon size={16} />
         </button>
-        <h1 className="text-2xl font-bold mb-4">{selectedQuiz.title}</h1>
-        <p className="text-gray-700">
-          {selectedQuiz.questions} questions in this quiz.
-        </p>
-        <button className="mt-6 px-6 py-2 bg-primary text-white rounded-lg">
-          Start Quiz
+
+        {/* Facility Button */}
+        <button className="flex items-center gap-1 px-10 py-2 rounded-md bg-primary text-white transition">
+          <span>Difficult</span>
+          <ExpandMoreIcon size={16} />
         </button>
       </div>
-    );
-  }
 
-  return (
-    <div className="max-w-4xl mx-auto py-12 px-6">
-      <h1 className="text-3xl font-bold text-primary mb-6">Practice Quizzes</h1>
-      <ul className="space-y-4">
-        {quizzes.map((quiz) => (
-          <li
-            key={quiz.id}
-            className="p-4 border rounded-lg shadow-sm flex justify-between items-center hover:shadow-md transition bg-white"
-          >
-            <div>
-              <h2 className="text-xl font-semibold">{quiz.title}</h2>
-              <p className="text-sm text-gray-500">{quiz.questions} questions</p>
-            </div>
-            <button
-              onClick={() => setSelectedQuiz(quiz)}
-              className="px-4 py-2 bg-primary text-white rounded-lg"
-            >
-              View
-            </button>
-          </li>
-        ))}
-      </ul>
+      {/* Right side search */}
+     <div className="relative flex-1 max-w-sm w-full">
+        {/* Search Icon */}
+        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <Search className="text-white w-5 h-5" />
+        </div>
+
+        {/* Input */}
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-11/12 pl-10 pr-4 py-2 rounded-md bg-primary text-white placeholder-white 
+                    focus:outline-none focus:ring-0"
+        />
+    </div>
+
+    </div>
+
+        <div className="flex flex-wrap overflow-hidden w-full justify-start gap-4 gap-y-0">
+          {cards.map((card, index) => (
+            <Card key={index} title={card.title} src={card.src} href={card.href} quizpage={true}/>
+          ))}
+        </div>
+
+      </div>
+
     </div>
   );
 }
